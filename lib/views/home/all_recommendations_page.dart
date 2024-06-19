@@ -6,7 +6,8 @@ import 'package:food_delivery_app/common/back_ground_container.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/constants/uidata.dart';
+import 'package:food_delivery_app/hooks/fetch_all_foods.dart';
+import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:food_delivery_app/views/home/widgets/food_tile.dart';
 
 class RecommendationsPage extends HookWidget {
@@ -14,19 +15,10 @@ class RecommendationsPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final hookResult = useFetchAllFoods('41007428');
-    // List<FoodsModel>? foods = hookResult.data;
-    // final isLoading = hookResult.isLoading;
-    // final error = hookResult.error;
-    final isLoading = useState(true);  
+    final hookResult = useFetchAllFoods('41007428');
+    List<FoodsModel>? foods = hookResult.data;
+    final isLoading = hookResult.isLoading;
 
-    useEffect(() {
-      // Simulate a delay for loading data
-      Future.delayed(const Duration(seconds: 1), () {
-        isLoading.value = false;
-      });
-      return;
-    }, []);
 
     return Scaffold(
       appBar: AppBar(
@@ -38,16 +30,16 @@ class RecommendationsPage extends HookWidget {
         ),
       ),
       body: BackGroundContainer(
-        child: isLoading.value
+        child: isLoading
         ? const FoodsListShimmer()         
         : Padding(
           padding:  EdgeInsets.all(12.h),
           child: ListView(
             scrollDirection: Axis.vertical,
             children: List.generate(
-              foods.length,
+              foods!.length,
               (index){
-                var food = foods[index];
+                FoodsModel food = foods[index];
                 return FoodTile(
                   food: food,
                 );

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/models/categories_model.dart';
 import 'package:food_delivery_app/views/categories/category_page.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ class CategoryTile extends StatelessWidget {
     required this.category,
   });
 
-  var category;
+  CategoriesModel category;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +30,10 @@ class CategoryTile extends StatelessWidget {
       leading: CircleAvatar(
         radius: 18.r,
         backgroundColor: kGrayLight,
-        child : Image.network(category["imageUrl"], fit: BoxFit.contain,),
+        child : Image.network(category.imageUrl, fit: BoxFit.contain,),
       ),
       title: CustomText(
-        text: category["title"],
+        text: category.title,
         style: appStyle(12, kGray, FontWeight.normal),
       ),
       trailing: Icon(

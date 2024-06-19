@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/categories_model.dart';
@@ -18,7 +19,6 @@ FetchHook useFetchCategories() {
       Uri url = Uri.parse('$appBaseUrl/api/category/random');
       final response = await http.get(url);
       
-      print(response.statusCode);
       
       if(response.statusCode == 200){
         categoriesItems.value = categoriesModelFromJson(response.body);
@@ -28,22 +28,11 @@ FetchHook useFetchCategories() {
 
     }catch(e){
       error.value = e as Exception;
+      debugPrint(e.toString());
     }finally{
       isLoading.value = false;
     }
   }
-
-  // void fetchData() async {
-  //   final response = await http.get(Uri.parse('https://dummyjson.com/recipes'));
-
-  //   if (response.statusCode == 200) {
-  //     CategoriesModel categoriesModel = categoriesModelFromJson(response.body);
-  //     print('Total recipes: ${categoriesModel.total}');
-  //     print('First recipe name: ${categoriesModel.recipes[0].name}');
-  //   } else {
-  //     throw Exception('Failed to load recipes');
-  //   }
-  // }
 
   useEffect(() {
     fetchData();

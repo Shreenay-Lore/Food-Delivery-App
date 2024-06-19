@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/constants/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerWidget extends StatelessWidget {
@@ -23,7 +22,7 @@ class ShimmerWidget extends StatelessWidget {
       {required double height, required double width, required double radius}) {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
-      highlightColor: kSecondaryLight,
+      highlightColor: Colors.white70,
       child: Container(
         height: height,
         width: width,

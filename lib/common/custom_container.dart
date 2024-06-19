@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 
+// ignore: must_be_immutable
 class CustomContainer extends StatelessWidget {
-  final Widget containerContent;
+  Widget containerContent;
+  Color? color;
 
-  const CustomContainer({
+  CustomContainer({
     super.key,
+    this.color,
     required this.containerContent,
   });
 
@@ -22,7 +25,7 @@ class CustomContainer extends StatelessWidget {
         ),
         child: Container(
           width: width,
-          color: kOffWhite,
+          color: color ?? kOffWhite,
           child: SingleChildScrollView(
             child: containerContent,
           ),

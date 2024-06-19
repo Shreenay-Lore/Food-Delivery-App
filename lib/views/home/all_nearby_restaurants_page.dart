@@ -6,7 +6,8 @@ import 'package:food_delivery_app/common/back_ground_container.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/constants/uidata.dart';
+import 'package:food_delivery_app/hooks/fetch_all_restaurants.dart';
+import 'package:food_delivery_app/models/restaurants_model.dart';
 import 'package:food_delivery_app/views/home/widgets/restaurant_tile.dart';
 
 class AllNearbyRestaurantsPage extends HookWidget {
@@ -14,19 +15,9 @@ class AllNearbyRestaurantsPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final hookResult = useFetchAllRestaurants('41007428');
-    // List<RestaurantsModel>? restaurants = hookResult.data;
-    // final isLoading = hookResult.isLoading;
-    // final error = hookResult.error;
-    final isLoading = useState(true);  
-
-    useEffect(() {
-      // Simulate a delay for loading data
-      Future.delayed(const Duration(seconds: 1), () {
-        isLoading.value = false;
-      });
-      return;
-    }, []);
+    final hookResult = useFetchAllRestaurants('41007428');
+    List<RestaurantsModel>? restaurants = hookResult.data;
+    final isLoading = hookResult.isLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,16 +29,16 @@ class AllNearbyRestaurantsPage extends HookWidget {
         ),
       ),
       body: BackGroundContainer(
-        child: isLoading.value
+        child: isLoading
         ? const FoodsListShimmer()         
         : Padding(
           padding:  EdgeInsets.all(12.h),
           child: ListView(
             scrollDirection: Axis.vertical,
             children: List.generate(
-              restaurants.length,
+              restaurants!.length,
               (index){
-                var restaurant = restaurants[index];
+                RestaurantsModel restaurant = restaurants[index];
                 return RestaurantTile(
                   restaurant: restaurant,
                 );

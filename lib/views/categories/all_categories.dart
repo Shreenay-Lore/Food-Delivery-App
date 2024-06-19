@@ -6,7 +6,8 @@ import 'package:food_delivery_app/common/back_ground_container.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/constants/uidata.dart';
+import 'package:food_delivery_app/hooks/fetch_all_categories.dart';
+import 'package:food_delivery_app/models/categories_model.dart';
 
 
 import 'widgets/category_tile.dart';
@@ -16,19 +17,10 @@ class AllCategories extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final hookResult = useFetchAllCategories();
-    // List<CategoriesModel>? categories = hookResult.data;
-    // final isLoading = hookResult.isLoading;
-    // final error = hookResult.error;
-    final isLoading = useState(true);  
-
-    useEffect(() {
-      // Simulate a delay for loading data
-      Future.delayed(const Duration(seconds: 1), () {
-        isLoading.value = false;
-      });
-      return;
-    }, []);
+    final hookResult = useFetchAllCategories();
+    List<CategoriesModel>? categories = hookResult.data;
+    final isLoading = hookResult.isLoading;
+    final error = hookResult.error;
 
 
     return Scaffold(
@@ -44,14 +36,14 @@ class AllCategories extends HookWidget {
         child: Container(
           height: height,
           padding: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h),
-          child: isLoading.value
+          child: isLoading
           ? const FoodsListShimmer()         
           : ListView(
             scrollDirection: Axis.vertical,
             children: List.generate(
-              categories.length,
+              categories!.length,
               (index){
-                var  category = categories[index];
+                CategoriesModel  category = categories[index];
                 return CategoryTile(category: category);
               }
             ),
