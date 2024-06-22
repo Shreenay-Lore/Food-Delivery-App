@@ -6,15 +6,19 @@ import 'package:food_delivery_app/common/back_ground_container.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/controller/category_controller.dart';
 import 'package:food_delivery_app/hooks/fetch_category_foods.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:food_delivery_app/views/home/widgets/food_tile.dart';
+import 'package:get/get.dart';
 
 class CategoryPage extends HookWidget {
   const CategoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final CategoryController controller = Get.put(CategoryController());   
+    
     final hookResult = useFetchFoodsByCategory('41007428');
     List<FoodsModel>? foods = hookResult.data;
     final isLoading = hookResult.isLoading;
@@ -23,15 +27,22 @@ class CategoryPage extends HookWidget {
       appBar: AppBar(
         backgroundColor: kOffWhite,
         elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            controller.updateCategory = '';
+            controller.updateTitle = '';
+            Get.back();
+          }, 
+          icon: const Icon(Icons.arrow_back_ios, color: kDark,),
+        ),
         centerTitle: true,
-        title: CustomText(text: "Category Page",
+        title: CustomText(text: "${controller.titleValue} Category",
         style: appStyle(12, kGray, FontWeight.w600),
         ),
       ),
       body: BackGroundContainer(
-        child: Container(
+        child: SizedBox(
           height: height,
-          padding: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h),
           child: isLoading
           ? const FoodsListShimmer()         
           : Padding(
@@ -43,7 +54,6 @@ class CategoryPage extends HookWidget {
                 (index){
                   FoodsModel food = foods[index];
                   return FoodTile(
-                    color: kWhite,
                     food: food,
                   );
                 }
