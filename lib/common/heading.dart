@@ -7,10 +7,11 @@ import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 
 class Heading extends StatelessWidget {
-  const Heading({super.key, required this.text, this.onTap,});
+  const Heading({super.key, required this.text, this.onTap, this.more});
 
   final String text;
   final void Function()? onTap;
+  final bool? more;
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +27,17 @@ class Heading extends StatelessWidget {
               style: appStyle(16, kDark, FontWeight.bold)
             ),
           ),
-      
-          GestureDetector(
+          
+          more == null
+          ? GestureDetector(
             onTap: onTap,
             child: Icon(
               AntDesign.appstore1, 
               color: kSecondary, 
               size: 20.sp,
             ),
-          ),
+          )
+          : const SizedBox.shrink(),
         ],
       ),
     );

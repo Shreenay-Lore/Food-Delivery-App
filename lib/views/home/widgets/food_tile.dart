@@ -8,9 +8,10 @@ import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 
 class FoodTile extends StatelessWidget {
-  const FoodTile({super.key, required this.food});
+  const FoodTile({super.key, required this.food, this.color});
 
   final FoodsModel food;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class FoodTile extends StatelessWidget {
             height: 70.h,
             width: width,
             decoration: BoxDecoration(
-              color: kOffWhite,
+              color: color ?? kOffWhite,
               borderRadius: BorderRadius.circular(9.r),
             ),
             child: Container(

@@ -20,7 +20,6 @@ class AllCategories extends HookWidget {
     final hookResult = useFetchAllCategories();
     List<CategoriesModel>? categories = hookResult.data;
     final isLoading = hookResult.isLoading;
-    final error = hookResult.error;
 
 
     return Scaffold(

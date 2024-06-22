@@ -6,7 +6,7 @@ import 'package:food_delivery_app/common/custom_text_field.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/search_controller.dart';
-import 'package:food_delivery_app/views/search/loading_widget.dart';
+import 'package:food_delivery_app/views/search/widget/loading_widget.dart';
 import 'package:food_delivery_app/views/search/search_results.dart';
 import 'package:get/get.dart';
 
