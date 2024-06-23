@@ -5,6 +5,8 @@ import 'package:food_delivery_app/common/shimmers/nearby_shimmer.dart';
 import 'package:food_delivery_app/hooks/fetch_restaurants.dart';
 import 'package:food_delivery_app/models/restaurants_model.dart';
 import 'package:food_delivery_app/views/home/widgets/restaurant_widget.dart';
+import 'package:food_delivery_app/views/restaurant/restaurant_page.dart';
+import 'package:get/get.dart';
 
 class NearbyRestaurants extends HookWidget {
   const NearbyRestaurants({super.key});
@@ -28,6 +30,7 @@ class NearbyRestaurants extends HookWidget {
           (index){
             RestaurantsModel restaurant = restaurants[index];
             return  RestaurantWidget(
+              onTap:() => Get.to(()=> RestaurantPage(restaurant: restaurant,)),
               image: restaurant.imageUrl,
               logo: restaurant.logoUrl,
               title: restaurant.title,

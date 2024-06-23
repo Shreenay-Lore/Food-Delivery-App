@@ -5,6 +5,8 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/models/restaurants_model.dart';
+import 'package:food_delivery_app/views/restaurant/restaurant_page.dart';
+import 'package:get/get.dart';
 
 class RestaurantTile extends StatelessWidget {
   const RestaurantTile({super.key, required this.restaurant});
@@ -15,7 +17,7 @@ class RestaurantTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        
+        Get.to(()=> RestaurantPage(restaurant: restaurant,));
       },
       child: Stack(
         clipBehavior: Clip.hardEdge,
@@ -105,6 +107,7 @@ class RestaurantTile extends StatelessWidget {
               height: 19.h,
               decoration: BoxDecoration(
                 color:  restaurant.isAvailable == true || 
+                        // ignore: unnecessary_null_comparison
                         restaurant.isAvailable == null 
                         ? kPrimary 
                         : kSecondary,
@@ -113,6 +116,7 @@ class RestaurantTile extends StatelessWidget {
               child: Center(
                 child: CustomText(
                   text: restaurant.isAvailable == true || 
+                        // ignore: unnecessary_null_comparison
                         restaurant.isAvailable == null 
                         ? "Open"
                         : "Closed",
