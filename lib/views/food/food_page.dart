@@ -32,6 +32,7 @@ class _FoodPageState extends State<FoodPage> {
   Widget build(BuildContext context) {
     final hookResult = useFetchRestaurant(widget.food.restaurant);
     RestaurantsModel? restaurant = hookResult.data;
+    
     final FoodController controller = Get.put(FoodController());
     controller.loadAdditives(widget.food.additives);
 
