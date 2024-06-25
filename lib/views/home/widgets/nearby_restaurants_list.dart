@@ -35,7 +35,8 @@ class NearbyRestaurants extends HookWidget {
               logo: restaurant.logoUrl,
               title: restaurant.title,
               time: restaurant.time,
-              rating: restaurant.ratingCount,
+              rating: restaurant.rating.toDouble(),
+              ratingCount: restaurant.ratingCount,
             );
           }
         ),

@@ -18,7 +18,9 @@ class FoodTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(FoodPage(food: food)),
+      onTap: () {
+        Get.to(()=> FoodPage(food: food));
+      },
       child: Stack(
         clipBehavior: Clip.hardEdge,
         children: [

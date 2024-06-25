@@ -13,6 +13,7 @@ class RestaurantWidget extends StatelessWidget {
     required this.title, 
     required this.time, 
     required this.rating, 
+    required this.ratingCount, 
     this.onTap,
   });
 
@@ -20,7 +21,8 @@ class RestaurantWidget extends StatelessWidget {
   final String logo;
   final String title;
   final String time;
-  final String rating;
+  final double rating;
+  final String ratingCount;
   final void Function()? onTap;
 
   @override
@@ -103,7 +105,7 @@ class RestaurantWidget extends StatelessWidget {
                       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         RatingBarIndicator(
-                          rating: 5,
+                          rating: rating,
                           itemBuilder: (context, index) {
                             return const Icon(
                               Icons.star,
@@ -115,7 +117,7 @@ class RestaurantWidget extends StatelessWidget {
                         ),
                         SizedBox(width: 10.w,),
                         CustomText(
-                          text: "+ $rating reviews & ratings", 
+                          text: "+ $ratingCount reviews & ratings", 
                           style: appStyle(9, kGray, FontWeight.w500)
                         ),
                       ],

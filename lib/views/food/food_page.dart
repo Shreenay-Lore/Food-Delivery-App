@@ -12,6 +12,7 @@ import 'package:food_delivery_app/controller/foods_controller.dart';
 import 'package:food_delivery_app/hooks/fetch_restaurant.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:food_delivery_app/models/restaurants_model.dart';
+import 'package:food_delivery_app/views/auth/phone_verification_page.dart';
 import 'package:food_delivery_app/views/restaurant/restaurant_page.dart';
 import 'package:get/get.dart';
 
@@ -32,8 +33,10 @@ class _FoodPageState extends State<FoodPage> {
     final hookResult = useFetchRestaurant(widget.food.restaurant);
     RestaurantsModel? restaurant = hookResult.data;
     final FoodController controller = Get.put(FoodController());
+    controller.loadAdditives(widget.food.additives);
 
     return Scaffold(
+      backgroundColor: kWhite,
       body: ListView(
         //physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
@@ -127,7 +130,7 @@ class _FoodPageState extends State<FoodPage> {
               ),
           ),
           
-          ///Food Tiile & Price.....
+          ///Food Title, Price, FoodTags.....
           Padding(
             padding: EdgeInsets.only(top: 10.h, left: 12.w, right: 12.w),
             child: Column(
@@ -143,7 +146,7 @@ class _FoodPageState extends State<FoodPage> {
                     ),
                     Obx(
                       ()=> CustomText(
-                        text: "\$ ${widget.food.price * controller.count.value}", 
+                        text: "\$ ${((widget.food.price + controller.additivePrice) * controller.count.value)}", 
                         style: appStyle(18, kPrimary, FontWeight.w600)
                       ),
                     ),
@@ -156,7 +159,7 @@ class _FoodPageState extends State<FoodPage> {
                   widget.food.description,
                   textAlign: TextAlign.justify, 
                   maxLines: 8,
-                  style: appStyle(11, kGray, FontWeight.w400)
+                  style: appStyle(10, kGray, FontWeight.w400)
                 ),
             
                 SizedBox(height: 5.h,),
@@ -200,35 +203,38 @@ class _FoodPageState extends State<FoodPage> {
                 SizedBox(height: 10.h,),
             
                 ///Additives & Toppings
-                Column(
-                  children: List.generate(
-                    widget.food.additives.length, 
-                    (index) { 
-                      final additive = widget.food.additives[index];
-                      return CheckboxListTile(
-                        contentPadding: EdgeInsets.zero,
-                        visualDensity: VisualDensity.compact,
-                        dense: true,
-                        value: false, 
-                        activeColor: kPrimary,
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              text: additive.title, 
-                              style: appStyle(11, kDark, FontWeight.w400)
-                            ),
-                            CustomText(
-                              text: "\$ ${additive.price}", 
-                              style: appStyle(11, kPrimary, FontWeight.w600)
-                            ),
-                          ],
-                        ),
-                        onChanged: (value) {
-                          
-                        },
-                      );
-                    }
+                Obx(
+                  () => Column(
+                    children: List.generate(
+                      controller.additivesList.length, 
+                      (index) { 
+                        final additive = controller.additivesList[index];
+                        return CheckboxListTile(
+                          contentPadding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          dense: true,
+                          value: additive.isChecked.value, 
+                          activeColor: kPrimary,
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                text: additive.title, 
+                                style: appStyle(11, kDark, FontWeight.w400)
+                              ),
+                              CustomText(
+                                text: "\$ ${additive.price}", 
+                                style: appStyle(11, kPrimary, FontWeight.w600)
+                              ),
+                            ],
+                          ),
+                          onChanged: (bool? value) {
+                            additive.toggleChecked();
+                            controller.getTotalPrice();
+                          },
+                        );
+                      }
+                    ),
                   ),
                 ),
                 
@@ -292,6 +298,7 @@ class _FoodPageState extends State<FoodPage> {
 
                 SizedBox(height: 20.h,),
 
+                ///Place Order & Add to Cart Button....
                 Container(
                   height: 40,
                   decoration: BoxDecoration(
@@ -339,10 +346,59 @@ class _FoodPageState extends State<FoodPage> {
 
   Future<dynamic> showVerificationSheet(){
     return showModalBottomSheet(
-      context: context, 
+      context: context,
+      showDragHandle: true, 
+      //backgroundColor: Colors.transparent,
       builder: (context) {
-        return Container(
-          height: 560.h,
+        return SizedBox(
+          height: 500.h,
+          width: width,
+          child: Padding(
+            padding: EdgeInsets.all(8.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 10.h,),
+                CustomText(
+                  text: "Verify Your Phone Number", 
+                  style: appStyle(18, kPrimary, FontWeight.w600)
+                ),
+                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 250.h,
+                  child: Column(
+                    children: List.generate(
+                      verificationReasons.length, 
+                      (index) => ListTile(
+                        leading: const Icon(Icons.check, color: kPrimary,),
+                        title: Text(
+                          verificationReasons[index],
+                          textAlign: TextAlign.justify,
+                          style: appStyle(11, kGrayLight, FontWeight.normal)
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: CustomButton(  
+                    height: 40.h,
+                    width: width,
+                    backgroundColor: kPrimary,
+                    borderColor: kPrimary,
+                    textColor: kWhite,
+                    text: 'Verify Phone Number',
+                    onTap: () {
+                      Get.to(()=> const PhoneVerificationPage());
+                    },
+                  ),
+                ),
+                SizedBox(height: 5.h,),
+              ],
+            ),
+          ),
         );
       },
     );
