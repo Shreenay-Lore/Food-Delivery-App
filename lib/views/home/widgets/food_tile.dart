@@ -134,7 +134,7 @@ class FoodTile extends StatelessWidget {
               ),
               child: Center(
                 child: CustomText(
-                  text: '\$ ${food.price.toStringAsFixed(2)}',
+                  text: '₹ ${food.price.toStringAsFixed(2)}',
                   style: appStyle(12, kLightWhite, FontWeight.bold)
                 ),
               ),

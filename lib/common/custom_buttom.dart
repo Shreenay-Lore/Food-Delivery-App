@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
   final double? borderRadius;
   final Color backgroundColor;
   final Color borderColor;
-  final double borderWidth;
+  final double? borderWidth;
   final Color textColor;
   final FontWeight fontWeight;
   final double fontSize;
@@ -22,13 +22,13 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.text,
     this.onTap,
-    this.width = 195,
+    this.width,
     this.height,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
     this.borderRadius,
     this.backgroundColor = kWhite,
     this.borderColor = kDark,
-    this.borderWidth = 0.3,
+    this.borderWidth,
     this.textColor = kDark,
     this.fontWeight = FontWeight.w600,
     this.fontSize = 14,
@@ -39,13 +39,16 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: width ?? width,
+        width: width ?? 195.w,
         height: height ?? 28.h,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(borderRadius ?? 9.r),
-          border: Border.all(color: borderColor, width: borderWidth),
+          border: Border.all(
+            color: borderColor, 
+            width: borderWidth ?? 0.3
+          ),
         ),
         padding: padding,
         child: GestureDetector(

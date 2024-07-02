@@ -61,7 +61,7 @@ class FoodWidget extends StatelessWidget {
                         ),
                         
                         CustomText(
-                          text: "\$ $price", 
+                          text: "₹ $price", 
                           style: appStyle(12, kPrimary, FontWeight.w500)
                         ),
                       ],

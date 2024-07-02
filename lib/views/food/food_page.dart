@@ -9,9 +9,12 @@ import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/custom_text_field.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/foods_controller.dart';
+import 'package:food_delivery_app/controller/login_controller.dart';
 import 'package:food_delivery_app/hooks/fetch_restaurant.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
+import 'package:food_delivery_app/models/login_response.dart';
 import 'package:food_delivery_app/models/restaurants_model.dart';
+import 'package:food_delivery_app/views/auth/login_page.dart';
 import 'package:food_delivery_app/views/auth/phone_verification_page.dart';
 import 'package:food_delivery_app/views/restaurant/restaurant_page.dart';
 import 'package:get/get.dart';
@@ -26,6 +29,8 @@ class FoodPage extends StatefulHookWidget {
 }
 
 class _FoodPageState extends State<FoodPage> {
+  
+
   final _pageController = PageController();
 
   @override
@@ -35,6 +40,10 @@ class _FoodPageState extends State<FoodPage> {
     
     final FoodController controller = Get.put(FoodController());
     controller.loadAdditives(widget.food.additives);
+
+    LoginResponse? user;
+    final LoginController loginController = Get.put(LoginController());
+    user = loginController.getUserInfo();
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -147,7 +156,7 @@ class _FoodPageState extends State<FoodPage> {
                     ),
                     Obx(
                       ()=> CustomText(
-                        text: "\$ ${((widget.food.price + controller.additivePrice) * controller.count.value)}", 
+                        text: "₹ ${((widget.food.price + controller.additivePrice) * controller.count.value)}", 
                         style: appStyle(18, kPrimary, FontWeight.w600)
                       ),
                     ),
@@ -224,7 +233,7 @@ class _FoodPageState extends State<FoodPage> {
                                 style: appStyle(11, kDark, FontWeight.w400)
                               ),
                               CustomText(
-                                text: "\$ ${additive.price}", 
+                                text: "₹ ${additive.price}", 
                                 style: appStyle(11, kPrimary, FontWeight.w600)
                               ),
                             ],
@@ -309,8 +318,20 @@ class _FoodPageState extends State<FoodPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      
                       GestureDetector(
-                        onTap: () => showVerificationSheet(),
+                        onTap: (){
+                          if(user == null){
+                            Get.to(()=> const LoginPage());
+                          }
+                          else if(user.phoneVerification == false){
+                            showVerificationSheet();
+                          }
+                          else{
+                            Get.snackbar("Place Order", '');
+                          }
+                          
+                        },
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: CustomText(
