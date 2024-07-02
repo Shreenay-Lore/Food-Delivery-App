@@ -4,7 +4,6 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/user_location_controller.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
