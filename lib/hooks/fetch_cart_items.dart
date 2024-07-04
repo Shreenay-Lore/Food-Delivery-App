@@ -1,18 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:food_delivery_app/models/hook_models/default_address_hook.dart';
+import 'package:food_delivery_app/models/cart_response_model.dart';
+import 'package:food_delivery_app/models/hook_models/hook_result.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 
-FetchDefaultAddress useFetchDefaultAddress(){
+FetchHook useFetchCartItems(){
   final box = GetStorage();
-  final addresses = useState<AddressResponseModel?>(null);
+  final cartItems = useState<List<CartResponseModel>?>(null);
   final isLoading = useState<bool>(false);
   final error = useState<Exception?>(null);
   final apiError = useState<ApiError?>(null);
@@ -22,7 +20,7 @@ FetchDefaultAddress useFetchDefaultAddress(){
 
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/address/default');
+    Uri url = Uri.parse('$appBaseUrl/api/cart');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -32,18 +30,13 @@ FetchDefaultAddress useFetchDefaultAddress(){
     try{
       print('Making request to: $url');
 
-      var response = await http.get(
-        url,
-        headers: headers,
-      );
+      var response = await http.get(url, headers: headers,);
       
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
-      
-            
+               
       if(response.statusCode == 200){
-        var data = jsonDecode(response.body);
-        addresses.value = AddressResponseModel.fromJson(data);
+        cartItems.value = cartResponseModelFromJson(response.body);
       }else{
         apiError.value = apiErrorFromJson(response.body);
       }
@@ -65,8 +58,8 @@ FetchDefaultAddress useFetchDefaultAddress(){
     fetchData();
   }
 
-  return FetchDefaultAddress(
-    data: addresses.value,
+  return FetchHook(
+    data: cartItems.value,
     isLoading: isLoading.value,
     error: error.value,
     refetch: refetch,

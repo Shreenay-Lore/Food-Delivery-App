@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,16 +8,16 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/cart_controller.dart';
-import 'package:food_delivery_app/models/cart_request_model.dart';
-import 'package:food_delivery_app/models/foods_model.dart';
-import 'package:food_delivery_app/views/food/food_page.dart';
+import 'package:food_delivery_app/models/cart_response_model.dart';
 import 'package:get/get.dart';
 
-class FoodTile extends StatelessWidget {
-  const FoodTile({super.key, required this.food, this.color});
 
-  final FoodsModel food;
+class CartTile extends StatelessWidget {
+  const CartTile({super.key, required this.cartItem, this.color, this.refetch});
+
+  final CartResponseModel cartItem;
   final Color? color;
+  final Function()? refetch;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class FoodTile extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Get.to(()=> FoodPage(food: food));
+        //Get.to(()=> FoodPage(food: food));
       },
       child: Stack(
         clipBehavior: Clip.hardEdge,
@@ -48,7 +50,7 @@ class FoodTile extends StatelessWidget {
                           height: 70.h,
                           width: 70.w,
                           child: Image.network(
-                            food.imageUrl[0], 
+                            cartItem.productId.imageUrl[0], 
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -83,13 +85,13 @@ class FoodTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: food.title, 
+                        text: cartItem.productId.title, 
                         style: appStyle(11, kDark, FontWeight.w400)
                       ),
 
                       CustomText(
-                        text: "Delivery Time: ${food.time}", 
-                        style: appStyle(11, kGray, FontWeight.w400)
+                        text: "Qty: ${cartItem.quantity.toString()}", 
+                        style: appStyle(10, kGray, FontWeight.w400)
                       ),
 
                       SizedBox(
@@ -97,9 +99,9 @@ class FoodTile extends StatelessWidget {
                         height: 15.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: food.additives.length,
+                          itemCount: cartItem.additives.length,
                           itemBuilder: (context, index) {
-                            Additive additive = food.additives[index];
+                            var additive = cartItem.additives[index];
                             return Container(
                               margin: EdgeInsets.only(right: 5.w),
                               decoration: BoxDecoration(
@@ -110,7 +112,7 @@ class FoodTile extends StatelessWidget {
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                                   child: CustomText(
-                                    text: additive.title, 
+                                    text: additive, 
                                     style: appStyle(8, kGray, FontWeight.w400)
                                   ),
                                 ),
@@ -138,7 +140,7 @@ class FoodTile extends StatelessWidget {
               ),
               child: Center(
                 child: CustomText(
-                  text: '₹ ${food.price.toStringAsFixed(2)}',
+                  text: '₹ ${cartItem.totalPrice.toStringAsFixed(2)}',
                   style: appStyle(12, kLightWhite, FontWeight.bold)
                 ),
               ),
@@ -150,28 +152,18 @@ class FoodTile extends StatelessWidget {
             top: 6.h,
             child: GestureDetector(
               onTap: () {
-                ///Add to Cart Function...
-                CartRequestModel data = CartRequestModel(
-                  productId: food.id,
-                  quantity: 1,
-                  additives: [],
-                  totalPrice: food.price,
-                );
-
-                String cartItem = cartRequestModelToJson(data);
-
-                cartController.addToCart(cartItem);     
+                cartController.removeFromCart(cartItem.id, refetch!);
               },
               child: Container(
                 width: 19.w,
                 height: 19.h,
                 decoration: BoxDecoration(
-                  color: kSecondary,
+                  color: kRed,
                   borderRadius: BorderRadius.circular(10.r)
                 ),
                 child: Center(
                   child: Icon(
-                    MaterialCommunityIcons.cart, 
+                    MaterialCommunityIcons.trash_can, 
                     size: 15.h,
                     color: kLightWhite,
                   )

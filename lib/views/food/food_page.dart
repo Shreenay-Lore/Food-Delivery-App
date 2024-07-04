@@ -8,14 +8,18 @@ import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/custom_text_field.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/controller/cart_controller.dart';
 import 'package:food_delivery_app/controller/foods_controller.dart';
 import 'package:food_delivery_app/controller/login_controller.dart';
 import 'package:food_delivery_app/hooks/fetch_restaurant.dart';
+import 'package:food_delivery_app/models/cart_request_model.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:food_delivery_app/models/login_response.dart';
+import 'package:food_delivery_app/models/order_request_model.dart';
 import 'package:food_delivery_app/models/restaurants_model.dart';
 import 'package:food_delivery_app/views/auth/login_page.dart';
 import 'package:food_delivery_app/views/auth/phone_verification_page.dart';
+import 'package:food_delivery_app/views/orders/order_page.dart';
 import 'package:food_delivery_app/views/restaurant/restaurant_page.dart';
 import 'package:get/get.dart';
 
@@ -44,6 +48,8 @@ class _FoodPageState extends State<FoodPage> {
     LoginResponse? user;
     final LoginController loginController = Get.put(LoginController());
     user = loginController.getUserInfo();
+
+    final CartController cartController = Get.put(CartController());
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -241,6 +247,7 @@ class _FoodPageState extends State<FoodPage> {
                           onChanged: (bool? value) {
                             additive.toggleChecked();
                             controller.getTotalPrice();
+                            controller.getCartAdditive();
                           },
                         );
                       }
@@ -317,8 +324,7 @@ class _FoodPageState extends State<FoodPage> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      
+                    children: [    
                       GestureDetector(
                         onTap: (){
                           if(user == null){
@@ -328,7 +334,25 @@ class _FoodPageState extends State<FoodPage> {
                             showVerificationSheet();
                           }
                           else{
-                            Get.snackbar("Place Order", '');
+                            double totalPrice = (widget.food.price + controller.additivePrice) * controller.count.value;
+                            OrderItem item = OrderItem(
+                              foodId: widget.food.id,
+                              quantity: controller.count.value,
+                              price: totalPrice,
+                              additives: controller.getCartAdditive(),
+                              instructions: controller.preferenceController.text,
+                            );
+
+
+                            Get.to(
+                              ()=> OrderPage(
+                                item: item,
+                                restaurant: restaurant,
+                                food: widget.food,
+                              ),
+                              transition: Transition.cupertino,
+                              duration: const Duration(milliseconds: 900)
+                            );
                           }
                           
                         },
@@ -342,6 +366,21 @@ class _FoodPageState extends State<FoodPage> {
                       ),
 
                       GestureDetector(
+                        onTap: () {
+                          ///Add to Cart Function...
+                          double totalPrice = (widget.food.price + controller.additivePrice) * controller.count.value;
+                            
+                          CartRequestModel data = CartRequestModel(
+                            productId: widget.food.id,
+                            quantity: controller.count.value,
+                            additives: controller.getCartAdditive(),
+                            totalPrice: totalPrice,
+                          );
+
+                          String cartItem = cartRequestModelToJson(data);
+
+                          cartController.addToCart(cartItem);
+                        },
                         child: CircleAvatar(
                           radius: 18.r,
                           backgroundColor: kSecondary,

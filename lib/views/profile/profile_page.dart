@@ -7,7 +7,7 @@ import 'package:food_delivery_app/controller/login_controller.dart';
 import 'package:food_delivery_app/models/login_response.dart';
 import 'package:food_delivery_app/views/auth/login_redirect.dart';
 import 'package:food_delivery_app/views/auth/verification_page.dart';
-import 'package:food_delivery_app/views/profile/shipping_address.dart';
+import 'package:food_delivery_app/views/profile/addresses_page.dart';
 import 'package:food_delivery_app/views/profile/widget/profile_appbar.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/views/profile/widget/profile_tile_widget.dart';
@@ -99,7 +99,7 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     ProfileTileWidget(
                       onTap: (){
-                        Get.to(()=> const ShippingAddress(),
+                        Get.to(()=> const AddressesPage(),
                         transition: Transition.rightToLeft,
                         duration: const Duration(milliseconds: 900),);
                       },
