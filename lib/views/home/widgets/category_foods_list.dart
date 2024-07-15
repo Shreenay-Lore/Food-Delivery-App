@@ -30,7 +30,7 @@ class CategoryFoodsList extends HookWidget {
             (index){
               FoodsModel food = foods[index];
               return FoodTile(
-                color: kWhite,
+                color: kOffWhite,
                 food: food,
               );
             }

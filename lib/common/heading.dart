@@ -20,12 +20,9 @@ class Heading extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 10.h),
-            child: CustomText(
-              text: text, 
-              style: appStyle(16, kDark, FontWeight.bold)
-            ),
+          CustomText(
+            text: text, 
+            style: appStyle(15.5, kDark, FontWeight.bold)
           ),
           
           more == null
@@ -33,7 +30,7 @@ class Heading extends StatelessWidget {
             onTap: onTap,
             child: Icon(
               AntDesign.appstore1, 
-              color: kSecondary, 
+              color: kDark, 
               size: 20.sp,
             ),
           )

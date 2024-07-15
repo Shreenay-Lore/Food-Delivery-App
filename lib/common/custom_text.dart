@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class CustomText extends StatelessWidget {
   final String text;
   final TextStyle style;
+  final int? maxLines;
 
   const CustomText({
     super.key,
     required this.text,
-    required this.style,
+    required this.style, this.maxLines,
+    
   });
 
   @override
@@ -17,7 +19,7 @@ class CustomText extends StatelessWidget {
       style: style,
       textAlign: TextAlign.left,
       softWrap: false,
-      maxLines: 1,
+      maxLines: maxLines ?? 1,
     );
   }
 }

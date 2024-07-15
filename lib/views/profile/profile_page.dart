@@ -7,6 +7,7 @@ import 'package:food_delivery_app/controller/login_controller.dart';
 import 'package:food_delivery_app/models/login_response.dart';
 import 'package:food_delivery_app/views/auth/login_redirect.dart';
 import 'package:food_delivery_app/views/auth/verification_page.dart';
+import 'package:food_delivery_app/views/orders/user_orders.dart';
 import 'package:food_delivery_app/views/profile/addresses_page.dart';
 import 'package:food_delivery_app/views/profile/widget/profile_appbar.dart';
 import 'package:food_delivery_app/constants/constants.dart';
@@ -44,14 +45,14 @@ class ProfilePage extends StatelessWidget {
     }
     
     return Scaffold(
-      backgroundColor: kPrimary,
+      backgroundColor: kOffWhite,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.h),
         child: const ProfileAppBar(),
       ),
       body: SafeArea(
-        child: CustomContainer(
-          containerContent: Column(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
               UserInfoWidget(user: user,),
               SizedBox(height: 10.h,),
@@ -64,7 +65,9 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     ProfileTileWidget(
                       onTap: (){
-                        Get.to(()=> const LoginRedirectPage());
+                        Get.to(()=> const UserOrders(),
+                        transition: Transition.cupertino,
+                        duration: const Duration(milliseconds: 900),);
                       },
                       title: "My Orders",
                       icon: Ionicons.fast_food_outline,
@@ -112,7 +115,9 @@ class ProfilePage extends StatelessWidget {
                       icon: AntDesign.customerservice, 
                     ),
                     ProfileTileWidget(
-                      onTap: (){},
+                      onTap: (){
+                        printStorageValues();
+                      },
                       title: "App Feedback",
                       icon: MaterialIcons.rss_feed,
                     ),
@@ -144,4 +149,18 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+
+  void printStorageValues() {
+    final box = GetStorage();
+    final keys = box.getKeys();
+
+    if (keys.isEmpty) {
+      print("Storage is empty.");
+    } else {
+      for (var key in keys) {
+        print('Key: $key, Value: ${box.read(key)}');
+      }
+    }
+  }
+
 }

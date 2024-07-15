@@ -47,16 +47,15 @@ class CartPage extends HookWidget {
 
   
     return Scaffold(
-      backgroundColor: kPrimary,
+      backgroundColor: kOffWhite,
       appBar: AppBar(
-        backgroundColor: kWhite,
+        backgroundColor: kOffWhite,
         centerTitle: true,
         title: CustomText(text: "CART", style: appStyle(14, kGray, FontWeight.w600)),
       ),
       body: SafeArea(
-        child: CustomContainer(
-          color: kWhite,
-          containerContent: isLoading
+        child: SingleChildScrollView(
+          child: isLoading
             ? const FoodsListShimmer()         
             : SizedBox(
               width: width,
@@ -68,11 +67,11 @@ class CartPage extends HookWidget {
                   itemBuilder: (context, index) {
                     CartResponseModel cartItem = cartItems[index];
                     return CartTile(
+                      color: kWhite,
                       cartItem: cartItem,
                       refetch: refetch,
                     );
                   },
-
                 ),
               ),
             ),

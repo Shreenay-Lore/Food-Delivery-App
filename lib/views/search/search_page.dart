@@ -11,25 +11,42 @@ import 'package:food_delivery_app/views/search/search_results.dart';
 import 'package:get/get.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+  SearchPage({super.key});
+
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(SearchFoodController());   
 
+    // // Focus the text field after the first frame is rendered
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   FocusScope.of(context).requestFocus(_focusNode);
+    // });
+    
+
     return Obx(() => Scaffold(
-        backgroundColor: kPrimary,
+        backgroundColor: kWhite,
         appBar: AppBar(
           toolbarHeight: 74.h,
           elevation: 0,
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
+          backgroundColor: kWhite,
           title: Padding(
             padding: EdgeInsets.only(top: 12.h),
             child: CustomTextField(
               controller: controller.searchController,
+              focusNode: _focusNode,
               keyboardType: TextInputType.text,
               hintText: "Search For Foods",
+              fillColor: kOffWhite,
+              borderColor: Colors.transparent,
+              prefixIcon: IconButton(
+                onPressed: () {
+                  Get.back();
+                }, 
+                icon: Icon(Icons.arrow_back_ios_rounded, color: kGray, size: 18.h,)
+              ),
               suffixIcon: GestureDetector(
                 onTap: (){
                   if(controller.isTriggered == false){
@@ -45,16 +62,15 @@ class SearchPage extends StatelessWidget {
                   
                 },
                 child: controller.isTriggered == false
-                  ? Icon(Ionicons.search_circle, color: kPrimary, size: 34.h,)
+                  ? Icon(Ionicons.search_circle, color: kDark, size: 34.h,)
                   : const Icon(Ionicons.close, color: kGray,)
               ),
             ),
           ),
         ),
         body: SafeArea(
-          child: CustomContainer(
-            color: Colors.white,
-            containerContent: controller.isLoading
+          child: SingleChildScrollView(
+            child: controller.isLoading
                 ? const FoodsListShimmer()
                 : controller.searchResults == null 
                 ? const LoadingWidget()

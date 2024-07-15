@@ -14,7 +14,12 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.validator,
     this.hintText,
-    this.maxLines,
+    this.maxLines, 
+    this.focusNode, 
+    this.onTap, 
+    this.readOnly,
+    this.borderColor,
+    this.fillColor,
   });
 
   final TextInputType? keyboardType;
@@ -26,6 +31,11 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? hintText;
   final int? maxLines;
+  final FocusNode? focusNode;
+  final void Function()? onTap;
+  final bool? readOnly;
+  final Color? borderColor;
+  final Color? fillColor; 
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +43,14 @@ class CustomTextField extends StatelessWidget {
       margin: EdgeInsets.all(6.h),
       padding: EdgeInsets.only(left: 6.h),
       decoration: BoxDecoration(
-        border: Border.all(color: kGray, width: 0.4),
+        color: fillColor ?? Colors.transparent,
+        border: Border.all(color: borderColor ?? kGray, width: 0.4),
         borderRadius: BorderRadius.circular(9.r),
       ),
       child: TextFormField(
         maxLines: maxLines ?? 1,
         controller: controller,
+        focusNode: focusNode,
         keyboardType: keyboardType,
         onEditingComplete: onEditingComplete,
         obscureText: obscureText ?? false,
@@ -51,7 +63,10 @@ class CustomTextField extends StatelessWidget {
           hintStyle: appStyle(11, kDark, FontWeight.normal),
           suffixIcon: suffixIcon,
           prefixIcon: prefixIcon,
+          contentPadding: EdgeInsets.symmetric(vertical: 15.h), 
         ),
+        onTap: onTap,
+        readOnly: readOnly ?? false,
       ),
     );
   }

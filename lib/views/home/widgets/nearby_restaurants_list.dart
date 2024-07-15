@@ -21,25 +21,24 @@ class NearbyRestaurants extends HookWidget {
     return isLoading
     ? const NearbyShimmer()
     : Container(
-      height: 190.h,
-      padding: EdgeInsets.only(left: 12.w, top: 10.h),
-      child:  ListView(
-        scrollDirection: Axis.horizontal,
-        children: List.generate(
-          restaurants!.length,
-          (index){
-            RestaurantsModel restaurant = restaurants[index];
-            return  RestaurantWidget(
-              onTap:() => Get.to(()=> RestaurantPage(restaurant: restaurant,)),
-              image: restaurant.imageUrl,
-              logo: restaurant.logoUrl,
-              title: restaurant.title,
-              time: restaurant.time,
-              rating: restaurant.rating.toDouble(),
-              ratingCount: restaurant.ratingCount,
-            );
-          }
-        ),
+      height: 1200.h,
+      padding: EdgeInsets.only(top: 12.h,),
+      child:  ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: restaurants!.length,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          RestaurantsModel restaurant = restaurants[index];
+          return  RestaurantWidget(
+            onTap:() => Get.to(()=> RestaurantPage(restaurant: restaurant,)),
+            image: restaurant.imageUrl,
+            logo: restaurant.logoUrl,
+            title: restaurant.title,
+            time: restaurant.time,
+            rating: restaurant.rating.toDouble(),
+            ratingCount: restaurant.ratingCount,
+          );
+        },
       ),
     );
   }

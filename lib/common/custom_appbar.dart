@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/user_location_controller.dart';
-import 'package:food_delivery_app/hooks/fetch_default_address.dart';
-import 'package:food_delivery_app/models/addresses_response_model.dart';
-import 'package:food_delivery_app/views/profile/addresses_page.dart';
+import 'package:food_delivery_app/views/profile/profile_page.dart';
+import 'package:food_delivery_app/views/profile/shipping_address.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,29 +20,28 @@ class CustomAppBar extends StatefulHookWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  //final UserLocationController controller = Get.put(UserLocationController());
+  final UserLocationController controller = Get.put(UserLocationController());
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _determinePosition();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _determinePosition();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final hookResult = useFetchDefaultAddress();
-    final AddressResponseModel?  address = hookResult.data;
-    // print(address!.addressLine1);
-    final isLoading = hookResult.isLoading;
+    // final box = GetStorage();
+    // String? accessToken = box.read('token');
 
+    // if (accessToken != null){
+    //   useFetchDefaultAddress(context);
+    // }
     
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       width: width,
-      height: 110.h,
-      color: kOffWhite,
-      child: Container(
-        margin: EdgeInsets.only(top: 20.h),
+      height: 100.h,
+      color: kWhite,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -50,129 +49,133 @@ class _CustomAppBarState extends State<CustomAppBar> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                CircleAvatar(
-                  radius: 22.r,
-                  backgroundColor: kSecondary,
-                  backgroundImage: const NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2IGJgx4UgC5x5kV9suVc0aDckZfKMoeStAA&s"),
-                ),
-            
                 Padding(
-                  padding: EdgeInsets.only(bottom: 6.h, left: 8.w),
+                  padding: EdgeInsets.only(bottom: 8.5.h,),
+                  child: Icon(Ionicons.md_location, size: 28.h),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 4.h, left: 6.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Get.to(()=> const AddressesPage());
+                          Get.to(()=> const ShippingAddress());
                         },
                         child: CustomText(
                           text: "Deliver to",
-                          style: appStyle(13, kSecondary, FontWeight.w600),
+                          style: appStyle(14, kDark, FontWeight.w700),
                         ),
                       ),
-                      SizedBox(
-                        width: width * 0.65,
-                        child: Text(
-                          isLoading 
-                          ? "Loading Address"
-                          : address?.addressLine1 ?? "Set Address",
-                          style: appStyle(11, kGrayLight, FontWeight.normal,),
-                          overflow: TextOverflow.ellipsis,
+                      Obx(
+                        () => SizedBox(
+                          width: width * 0.65,
+                          child: Text(
+                            controller.address1 == ""
+                            ? controller.address == ""
+                              ? "Select Location" //Please enable location services to get your address"
+                              : controller.address
+                            : controller.address1,
+                            style: appStyle(11, kGray, FontWeight.normal,),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
-                      // Obx(
-                      //   () => SizedBox(
-                      //     width: width * 0.65,
-                      //     child: Text(
-                      //       controller.address == ""
-                      //       ? "Select Address"
-                      //       : controller.address,
-                      //       style: appStyle(11, kGrayLight, FontWeight.normal,),
-                      //       overflow: TextOverflow.ellipsis,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
-
+            
               ],
             ),
-            
-            Text(
-              getTimeOfDay(),
-              style: const TextStyle(fontSize: 32),
+
+            Padding(
+              padding: EdgeInsets.only(bottom: 4.h,),
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(()=> const ProfilePage());
+                },
+                child: CircleAvatar(
+                  radius: 18.r,
+                  backgroundColor: kSecondary,
+                  backgroundImage: const NetworkImage("https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"),
+                ),
+              ),
             ),
+            
+            // Text(
+            //   getTimeOfDay(),
+            //   style: const TextStyle(fontSize: 32),
+            // ),
           ],
         ),
-      ),
+
     );
   }
 
-  String getTimeOfDay(){
-    DateTime now = DateTime.now();
-    int hour = now.hour;
+  // String getTimeOfDay(){
+  //   DateTime now = DateTime.now();
+  //   int hour = now.hour;
 
-    if(hour>=0 && hour<12){
-      return " ☀️ ";
-    }else if(hour>=12 && hour<16){
-      return " ⛅ ";
-    }else{
-      return " 🌙 ";
-    } 
-  }
-  
-  // ///Get Current Location Function...
-  // Future<void> _determinePosition() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-
-  //   // Test if location services are enabled.
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     // Location services are not enabled don't continue
-  //     // accessing the position and request users of the 
-  //     // App to enable the location services.
-  //     return Future.error('Location services are disabled.');
-  //   }
-
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       // Permissions are denied, next time you could try
-  //       // requesting permissions again (this is also where
-  //       // Android's shouldShowRequestPermissionRationale 
-  //       // returned true. According to Android guidelines
-  //       // your App should show an explanatory UI now.
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
-    
-  //   if (permission == LocationPermission.deniedForever) {
-  //     // Permissions are denied forever, handle appropriately. 
-  //     return Future.error(
-  //       'Location permissions are permanently denied, we cannot request permissions.');
+  //   if(hour>=0 && hour<12){
+  //     return " ☀️ ";
+  //   }else if(hour>=12 && hour<16){
+  //     return " ⛅ ";
+  //   }else{
+  //     return " 🌙 ";
   //   } 
-
-  //   _getCurrentLocation();
-  //   // When we reach here, permissions are granted and we can
-  //   // continue accessing the position of the device.
-
   // }
+  
+  ///Get Current Location Function...
+  Future<void> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  // Future<void> _getCurrentLocation() async {
-  //   Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.best);
-  //   LatLng currentLocation = LatLng(position.latitude, position.longitude);
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the 
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale 
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
     
-  //   print(currentLocation);
-  //   controller.setPosition(currentLocation);
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately. 
+      return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+    } 
 
-  //   controller.getUserAddress(currentLocation);
-  //   //_getAddressFromLatLng(currentLocation);
-  // } 
+    _getCurrentLocation();
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+
+  }
+
+  Future<void> _getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    LatLng currentLocation = LatLng(position.latitude, position.longitude);
+    
+    print(currentLocation);
+    controller.setPosition(currentLocation);
+
+    controller.getUserAddress(currentLocation);
+    //_getAddressFromLatLng(currentLocation);
+  } 
 
   // Future<void> _getAddressFromLatLng(LatLng position) async {
   //   try {

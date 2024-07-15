@@ -22,8 +22,9 @@ class FoodsList extends HookWidget {
     ? const NearbyShimmer()
     : Container(
       //color: Colors.black12,
-      height: 184.h,
-      padding: EdgeInsets.only(left: 12.w, top: 10.h),
+      height: 236.h,
+      margin: EdgeInsets.only(bottom: 16.h,),
+      padding: EdgeInsets.only(left: 0.w, top: 12.h, ),
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: List.generate(
@@ -36,6 +37,7 @@ class FoodsList extends HookWidget {
               title: food.title,
               price: food.price.toStringAsFixed(2),
               time: food.time,
+              rating: food.rating,
             );
           }
         ),

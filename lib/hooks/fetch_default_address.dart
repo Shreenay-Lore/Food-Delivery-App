@@ -1,16 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/common/address_bottom_sheet.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/controller/user_location_controller.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_delivery_app/models/hook_models/default_address_hook.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 
-FetchDefaultAddress useFetchDefaultAddress(){
+FetchDefaultAddress useFetchDefaultAddress(BuildContext context){
+  final UserLocationController controller = Get.put(UserLocationController());
   final box = GetStorage();
   final addresses = useState<AddressResponseModel?>(null);
   final isLoading = useState<bool>(false);
@@ -43,12 +46,18 @@ FetchDefaultAddress useFetchDefaultAddress(){
             
       if(response.statusCode == 200){
         var data = jsonDecode(response.body);
+        box.write("defaultAddress", true);
         addresses.value = AddressResponseModel.fromJson(data);
+        controller.setAddress1 = addresses.value!.addressLine1;
       }else{
+        box.write("defaultAddress", false);
+        // showAddressSheet(context);
         apiError.value = apiErrorFromJson(response.body);
       }
 
     }catch(e){
+      box.write("defaultAddress", false);
+      // showAddressSheet(context);
       debugPrint(e.toString());
     }finally{
       isLoading.value = false;

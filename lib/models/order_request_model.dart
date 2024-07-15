@@ -8,7 +8,7 @@ class OrderRequestModel {
     final String userId;
     final List<OrderItem> orderItems;
     final double orderTotal;
-    final int deliveryFee;
+    final double deliveryFee;
     final double grandTotal;
     final String deliveryAddress;
     final String restaurantAddress;
@@ -18,12 +18,12 @@ class OrderRequestModel {
     final String restaurantId;
     final List<double> restaurantCoords;
     final List<double> recipientCoords;
-    final String driverId;
-    final int rating;
-    final String feedback;
-    final String promoCode;
-    final double discountAmount;
-    final String notes;
+    // final String driverId;
+    // final int rating;
+    // final String feedback;
+    // final String promoCode;
+    // final double discountAmount;
+    // final String notes;
 
     OrderRequestModel({
         required this.userId,
@@ -39,12 +39,12 @@ class OrderRequestModel {
         required this.restaurantId,
         required this.restaurantCoords,
         required this.recipientCoords,
-        required this.driverId,
-        required this.rating,
-        required this.feedback,
-        required this.promoCode,
-        required this.discountAmount,
-        required this.notes,
+        // required this.driverId,
+        // required this.rating,
+        // required this.feedback,
+        // required this.promoCode,
+        // required this.discountAmount,
+        // required this.notes,
     });
 
     factory OrderRequestModel.fromJson(Map<String, dynamic> json) => OrderRequestModel(
@@ -61,12 +61,12 @@ class OrderRequestModel {
         restaurantId: json["restaurantId"],
         restaurantCoords: List<double>.from(json["restaurantCoords"].map((x) => x?.toDouble())),
         recipientCoords: List<double>.from(json["recipientCoords"].map((x) => x?.toDouble())),
-        driverId: json["driverId"],
-        rating: json["rating"],
-        feedback: json["feedback"],
-        promoCode: json["promoCode"],
-        discountAmount: json["discountAmount"],
-        notes: json["notes"],
+        // driverId: json["driverId"],
+        // rating: json["rating"],
+        // feedback: json["feedback"],
+        // promoCode: json["promoCode"],
+        // discountAmount: json["discountAmount"],
+        // notes: json["notes"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -83,12 +83,12 @@ class OrderRequestModel {
         "restaurantId": restaurantId,
         "restaurantCoords": List<dynamic>.from(restaurantCoords.map((x) => x)),
         "recipientCoords": List<dynamic>.from(recipientCoords.map((x) => x)),
-        "driverId": driverId,
-        "rating": rating,
-        "feedback": feedback,
-        "promoCode": promoCode,
-        "discountAmount": discountAmount,
-        "notes": notes,
+        // "driverId": driverId,
+        // "rating": rating,
+        // "feedback": feedback,
+        // "promoCode": promoCode,
+        // "discountAmount": discountAmount,
+        // "notes": notes,
     };
 }
 

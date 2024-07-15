@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/common/app_style.dart';
@@ -12,13 +13,15 @@ import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/user_location_controller.dart';
+import 'package:food_delivery_app/hooks/fetch_default_address.dart';
 import 'package:food_delivery_app/models/address_model.dart';
+import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/views/auth/widget/email_textfield.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
-class ShippingAddress extends StatefulWidget {
+class ShippingAddress extends StatefulHookWidget {
   const ShippingAddress({super.key});
 
   @override
@@ -133,6 +136,9 @@ class _ShippingAddressState extends State<ShippingAddress> {
   @override
   Widget build(BuildContext context) {
     final UserLocationController locationController = Get.put(UserLocationController());
+    final hookResult = useFetchDefaultAddress(context);
+    AddressResponseModel? defaultAddress = hookResult.data;
+    final isLoading = hookResult.isLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -327,6 +333,8 @@ class _ShippingAddressState extends State<ShippingAddress> {
                             value: locationController.isDefault, 
                             onChanged: (value) {
                               locationController.setIsDefault = value;
+                              String data = jsonEncode(defaultAddress);
+                              locationController.setAddress1 = data;
                             },
                           ))
                         ],
@@ -340,7 +348,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                       backgroundColor: kPrimary,
                       borderColor: kPrimary,
                       textColor: kWhite,
-                      text: 'S U B M I T',
+                      text: isLoading ? 'Loading...' : 'S U B M I T',
                       onTap: (){
                         if (_searchController.text.isNotEmpty &&
                             _postalCode.text.isNotEmpty &&
@@ -355,6 +363,8 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           );
 
                           String data = addressModelToJson(model);
+                          
+                          locationController.addAddress(data);
                         }
 
                       },

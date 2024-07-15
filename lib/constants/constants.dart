@@ -1,10 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-String googleApiKey = '';
+String googleApiKey = 'AIzaSyBEr2XEdhYbfbjIt59aOfkpYX8cSAY1nfs';
 
 ///AIzaSyBEr2XEdhYbfbjIt59aOfkpYX8cSAY1nfs
 ///AIzaSyC_XDlnzFrtagyWnGeYC5TonZXp5XCk_m4
+
+///firebase appcheck token: 0d97fb25-35eb-49a7-849e-26935a323bd2
 
 const kPrimary = Color(0xFF30b9b2);
 const kPrimaryLight = Color(0xFF40F3EA);
@@ -23,7 +25,7 @@ double height = 825.h;
 double width = 375.w;
 
 
-const String appBaseUrl = "http://192.168.1.7:6013";
+const String appBaseUrl = "http://192.168.1.6:6013";
 
 final List<String> verificationReasons =[
   'Real-time Updates: Get instant notifications about your order status.',
@@ -32,3 +34,28 @@ final List<String> verificationReasons =[
   'Effortless Rescheduling: Easily address issues with a quick call.',
   'Exclusive Offers: Stay in the loop for special deals and promotions.',
 ];
+
+List<String> orderList = [
+  "Pending",
+  "Preparing",
+  "Delivering",
+  "Delivered",
+  "Cancelled",
+];
+
+List<String> reasonsForAddingAddress = [
+  "Ensures accurate delivery location",
+  "Speeds up the checkout process",
+  "Facilitates multiple delivery addresses",
+  "Enables tracking of delivery status",
+  "Improves customer support response",
+];
+
+  ///Dashboard Advertisement Image List....
+  final List<String> advertisementImgList = [ 
+    "https://cdn.grabon.in/gograbon/images/merchant/1536747990676.png",
+    "https://d4t7t8y8xqo0t.cloudfront.net/app/resized/1080X/pages/989/image20191105102133.jpg",
+    "https://cdn4.singleinterface.com/files/enterprise/coverphoto/34404/KFC-BAnner-20-02-24-05-04-08.jpg",
+    "https://d4t7t8y8xqo0t.cloudfront.net/app/resized/1080X/pages/770/image20191022055205.jpg",
+  ];
+
