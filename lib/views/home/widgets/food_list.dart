@@ -32,7 +32,13 @@ class FoodsList extends HookWidget {
           (index){
             FoodsModel food = foods[index];
             return FoodWidget(
-              onTap: () => Get.to(() => FoodPage(food: food)),
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => FoodPageBottomSheet(food: food),
+                );
+              },
               image: food.imageUrl[0],
               title: food.title,
               price: food.price.toStringAsFixed(2),

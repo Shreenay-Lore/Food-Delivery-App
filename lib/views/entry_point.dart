@@ -13,7 +13,6 @@ import 'package:food_delivery_app/models/cart_count_response_mode.dart';
 import 'package:food_delivery_app/views/cart/cart_page.dart';
 import 'package:food_delivery_app/views/home/home_page.dart';
 import 'package:food_delivery_app/views/profile/profile_page.dart';
-import 'package:food_delivery_app/views/search/search_page.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -23,8 +22,7 @@ class MainScreen extends HookWidget {
 
   List<Widget> pageList = const [
     HomePage(),
-    // SearchPage(),
-    CartPage(),
+    Placeholder(),
     ProfilePage(),
   ];
  
@@ -66,7 +64,11 @@ class MainScreen extends HookWidget {
                       selectedIconTheme: const IconThemeData(color: kWhite),
                       unselectedIconTheme: const IconThemeData(color: kGray),
                       onTap: (value) {
-                        controller.setTabIndex = value;
+                        if (value == 1) {
+                          Get.to(() => const CartPage());
+                        } else {
+                          controller.setTabIndex = value;
+                        }
                       },
                       currentIndex: controller.tabIndex,
                       items: [
@@ -76,10 +78,7 @@ class MainScreen extends HookWidget {
                           : const Icon(Ionicons.fast_food_outline),
                           label : "Home"
                         ),
-                        // const BottomNavigationBarItem(
-                        //   icon: Icon(AntDesign.search1),
-                        //   label : "Search"
-                        // ),
+
                         BottomNavigationBarItem(
                           icon: Obx(
                             () => cartController.count == ''

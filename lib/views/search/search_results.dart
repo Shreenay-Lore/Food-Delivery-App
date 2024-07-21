@@ -15,7 +15,7 @@ class SearchResults extends StatelessWidget {
     
     return Container(
       height: height,
-      padding: EdgeInsets.fromLTRB(12.w, 10.h, 12.w, 0.h),
+      padding: EdgeInsets.fromLTRB(0.w, 10.h, 0.w, 0.h),
       child: ListView.builder(
         itemCount: controller.searchResults!.length,
         itemBuilder: (context, index) {

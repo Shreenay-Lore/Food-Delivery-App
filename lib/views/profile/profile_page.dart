@@ -8,7 +8,7 @@ import 'package:food_delivery_app/models/login_response.dart';
 import 'package:food_delivery_app/views/auth/login_redirect.dart';
 import 'package:food_delivery_app/views/auth/verification_page.dart';
 import 'package:food_delivery_app/views/orders/user_orders.dart';
-import 'package:food_delivery_app/views/profile/addresses_page.dart';
+import 'package:food_delivery_app/views/profile/address_list_page.dart';
 import 'package:food_delivery_app/views/profile/widget/profile_appbar.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/views/profile/widget/profile_tile_widget.dart';

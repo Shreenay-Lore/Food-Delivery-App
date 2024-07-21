@@ -4,7 +4,7 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/views/profile/shipping_address.dart';
+import 'package:food_delivery_app/views/profile/add_address_page.dart';
 import 'package:get/get.dart';
 
 Future<dynamic> showAddressSheet(BuildContext context){

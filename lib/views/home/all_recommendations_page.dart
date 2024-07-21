@@ -32,19 +32,17 @@ class RecommendationsPage extends HookWidget {
       body: BackGroundContainer(
         child: isLoading
         ? const FoodsListShimmer()         
-        : Padding(
-          padding:  EdgeInsets.all(12.h),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: List.generate(
-              foods!.length,
-              (index){
-                FoodsModel food = foods[index];
-                return FoodTile(
-                  food: food,
-                );
-              }
-            ),
+        : ListView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.only(top: 14.h),
+          children: List.generate(
+            foods!.length,
+            (index){
+              FoodsModel food = foods[index];
+              return FoodTile(
+                food: food,
+              );
+            }
           ),
         ),
       ),

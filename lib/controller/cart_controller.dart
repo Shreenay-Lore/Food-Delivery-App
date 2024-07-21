@@ -42,7 +42,6 @@ class CartController extends GetxController{
       'Authorization' : 'Bearer $accessToken',
     };
 
-
     try{  
       print('Making request to: $url');
 
@@ -51,24 +50,34 @@ class CartController extends GetxController{
         headers: headers,
         body: cart,
       );
+
+      // var cartItem = jsonDecode(cart);
+      // print("aaaaaaaaaaaaaaaaaaaaaaaasssssssssss${cartItem}.");
+      // if (cartItem["quantity"] == 2) {
+      //   Get.snackbar(
+      //     "Error", "Already",
+      //     colorText: kWhite,
+      //     backgroundColor: kRed,
+      //     icon: const Icon(Icons.error_outline, color: kLightWhite,)
+      //   );
+      // }
+      
       
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
       
-      if(response.statusCode == 200){
+      if(response.statusCode == 201){
         var data = cartCountResponseModelFromJson(response.body);
-        String currentCount = jsonEncode(data.count);
-        updateCount = currentCount;
+        updateCount = data.count.toString();
         Get.snackbar(
-          "Added to Cart", "Enjoy your food! ",
+          "Added to Cart", "Enjoy your food!",
           colorText: kWhite,
-          backgroundColor: kPrimary,
-          icon: const Icon(Icons.check_circle_outline)
+          backgroundColor: kSecondary,
+          icon: const Icon(Icons.check_circle_outline),
+          duration: const Duration(milliseconds: 600),
         );
-        
         setLoading = false;
 
-        
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
@@ -118,12 +127,67 @@ class CartController extends GetxController{
 
         refetch();
 
-        Get.snackbar(
-          "Product removed successfully", "Explore more! ",
+        print("Product removed successfully");
+
+        // Get.snackbar(
+        //   "Product removed successfully", "Explore more! ",
+        //   colorText: kWhite,
+        //   backgroundColor: kPrimary,
+        //   icon: const Icon(Icons.check_circle_outline)
+        // );
+
+      }else{
+        var error = apiErrorFromJson(response.body);
+        Get.snackbar( 
+          "Error", error.message,
           colorText: kWhite,
-          backgroundColor: kPrimary,
-          icon: const Icon(Icons.check_circle_outline)
+          backgroundColor: kRed,
+          icon: const Icon(Icons.error_outline, color: kLightWhite,)
         );
+      }
+
+    }catch(e){
+      debugPrint(e.toString());
+    }finally{
+      setLoading = false;
+    }
+  }
+  
+
+  void decrementProductQtyCart(String productId, Function refetch) async {
+    setLoading = true;
+    String accessToken = box.read('token');
+
+    Uri url = Uri.parse('$appBaseUrl/api/cart/decrement/$productId');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization' : 'Bearer $accessToken',
+    };
+
+
+    try{  
+      print('Making request to: $url');
+
+      var response = await http.get(url, headers: headers,);
+      
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      
+      if(response.statusCode == 200){
+
+        setLoading = false;
+
+        refetch();
+
+        print("Decremented successfully");
+
+        // Get.snackbar(
+        //   "Decrement successfully", "Explore more! ",
+        //   colorText: kWhite,
+        //   backgroundColor: kPrimary,
+        //   icon: const Icon(Icons.check_circle_outline)
+        // );
 
       }else{
         var error = apiErrorFromJson(response.body);

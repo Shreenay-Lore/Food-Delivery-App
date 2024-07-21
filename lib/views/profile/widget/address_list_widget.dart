@@ -23,10 +23,6 @@ class AddressListWidget extends StatelessWidget {
                 color: kGray,
                 width: 0.5,
               ),
-              top: BorderSide(
-                color: kGray,
-                width: 0.5,
-              ),
             ),
           ),
           child: AddressTile(address: address),

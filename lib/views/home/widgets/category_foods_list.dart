@@ -22,7 +22,7 @@ class CategoryFoodsList extends HookWidget {
       child: isLoading
       ? const FoodsListShimmer()         
       : Padding(
-        padding:  EdgeInsets.all(12.h),
+        padding:  EdgeInsets.only(top: 20.h),
         child: ListView(
           scrollDirection: Axis.vertical,
           children: List.generate(

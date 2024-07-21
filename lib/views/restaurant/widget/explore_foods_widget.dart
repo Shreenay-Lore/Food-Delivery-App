@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/hooks/fetch_foods.dart';
@@ -22,7 +23,7 @@ class ExploreWidget extends HookWidget {
       body: isLoading
       ? const FoodsListShimmer()
       : SizedBox(
-        height: height * 0.7,
+        height: height * 0.50.h,
         child: ListView(
           padding: EdgeInsets.zero,
           children: List.generate(foods!.length, (index){

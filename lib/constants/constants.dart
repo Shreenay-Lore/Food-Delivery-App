@@ -25,7 +25,7 @@ double height = 825.h;
 double width = 375.w;
 
 
-const String appBaseUrl = "http://192.168.1.6:6013";
+const String appBaseUrl = "http://192.168.1.4:6013";
 
 final List<String> verificationReasons =[
   'Real-time Updates: Get instant notifications about your order status.',

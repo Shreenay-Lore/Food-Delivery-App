@@ -68,6 +68,7 @@ class UserLocationController extends GetxController{
     _address1.value = value;
   }
 
+  ///Google API Function..
   void getUserAddress(LatLng position) async {
     Uri url = Uri.parse(
       'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$googleApiKey');
@@ -147,5 +148,52 @@ class UserLocationController extends GetxController{
     }
   }
   
+  void setDefaultAddress(String addressId,) async {
+    String accessToken = box.read('token');
 
+    Uri url = Uri.parse('$appBaseUrl/api/address/default/$addressId');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization' : 'Bearer $accessToken',
+    };
+
+    try{  
+      print('Making request to: $url');
+
+      var response = await http.patch(
+        url,
+        headers: headers,
+      );
+      
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      
+      if(response.statusCode == 200){
+        
+        Get.snackbar(
+          "Address set as default", "Order Food! ",
+          colorText: kWhite,
+          backgroundColor: kDark,
+          icon: const Icon(Ionicons.fast_food_outline)
+        );
+
+        Get.offAll(()=> MainScreen());
+
+      }else{
+        var error = apiErrorFromJson(response.body);
+        Get.snackbar( 
+          "Failed to set address as default", error.message,
+          colorText: kWhite,
+          backgroundColor: kRed,
+          icon: const Icon(Icons.error)
+        );
+
+      }
+
+    }catch(e){
+      debugPrint(e.toString());
+    }
+  }
+  
 }

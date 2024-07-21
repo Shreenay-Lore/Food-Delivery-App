@@ -55,7 +55,7 @@ class OrderPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: kOffWhite,
         centerTitle: true,
-        title: CustomText(text: "Complete Ording", style: appStyle(14, kGray, FontWeight.w600)),
+        title: CustomText(text: "Order Details", style: appStyle(14, kGray, FontWeight.w600)),
       ),
       body: BackGroundContainer(
         child: Padding(

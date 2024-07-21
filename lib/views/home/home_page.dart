@@ -89,21 +89,8 @@ class HomePage extends StatelessWidget {
                     ),
                     const NearbyRestaurants(),
 
-                    
-                              
-                    Heading(
-                      text: 'Fastest Food closer to you',
-                      onTap: () {
-                        Get.to(
-                          ()=> const AllFastestFoodsPage(),
-                          transition: Transition.cupertino,
-                          duration: const Duration(milliseconds: 900)
-                        );
-                      },
-                    ),
-                    const FoodsList(),
-
-                    SizedBox(height: 0.h,),
+                    SizedBox(height: 150.h,)
+                            
                   ],
                 )
                 : SingleChildScrollView(
