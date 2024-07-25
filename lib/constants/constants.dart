@@ -1,12 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-String googleApiKey = 'AIzaSyBEr2XEdhYbfbjIt59aOfkpYX8cSAY1nfs';
+String googleApiKey = 'ApiKey';
 
-///AIzaSyBEr2XEdhYbfbjIt59aOfkpYX8cSAY1nfs
-///AIzaSyC_XDlnzFrtagyWnGeYC5TonZXp5XCk_m4
 
-///firebase appcheck token: 0d97fb25-35eb-49a7-849e-26935a323bd2
 
 const kPrimary = Color(0xFF30b9b2);
 const kPrimaryLight = Color(0xFF40F3EA);
