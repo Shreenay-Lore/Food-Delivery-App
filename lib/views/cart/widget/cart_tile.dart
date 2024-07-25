@@ -100,8 +100,6 @@ class CartTile extends StatelessWidget {
                           ),
                         ),
 
-                        
-
                       ],
                     )
                   ],
@@ -163,6 +161,7 @@ class CartTile extends StatelessWidget {
                 ),
               )
             ),
+          
           ]
         ),
       ),

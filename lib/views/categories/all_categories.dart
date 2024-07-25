@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_delivery_app/common/app_style.dart';
-import 'package:food_delivery_app/common/back_ground_container.dart';
-import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/hooks/fetch_all_categories.dart';
 import 'package:food_delivery_app/models/categories_model.dart';
-
-
+import 'package:food_delivery_app/views/categories/widgets/header_widget.dart';
+import 'package:food_delivery_app/views/categories/widgets/intro_text.dart';
 import 'widgets/category_tile.dart';
 
 class AllCategories extends HookWidget {
@@ -18,37 +15,43 @@ class AllCategories extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final hookResult = useFetchAllCategories();
-    List<CategoriesModel>? categories = hookResult.data;
+    final categories = hookResult.data;
     final isLoading = hookResult.isLoading;
 
-
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kOffWhite,
-        elevation: 0,
-        centerTitle: true,
-        title: CustomText(text: "All Categories",
-        style: appStyle(12, kGray, FontWeight.w600),
-        ),
-      ),
-      body: BackGroundContainer(
-        child: Container(
-          height: height,
-          padding: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h),
-          child: isLoading
-          ? const FoodsListShimmer()         
-          : ListView(
-            scrollDirection: Axis.vertical,
-            children: List.generate(
-              categories!.length,
-              (index){
-                CategoriesModel  category = categories[index];
-                return CategoryTile(category: category);
-              }
-            ),
-          ),
-        ),
-      ),
+      backgroundColor: kWhite,
+      body: isLoading 
+        ? const FoodsListShimmer() 
+        : buildContent(categories),
     );
   }
+
+  Widget buildContent(List<CategoriesModel>? categories) {
+    return Column(
+      children: [
+        HeaderWidget(
+          imageUrl: "https://img.pikbest.com/wp/202405/fast-food-restaurant-cartoon-3d-rendered-for-a_9829583.jpg!bw700",
+          height: 130.h,
+        ),
+
+        Expanded(
+          child: ListView.builder(
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            itemCount: (categories?.length ?? 0) + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                 return const IntroTextWidget(
+                  title: "Discover All Categories!",
+                  subtitle: "From our kitchen to your table, enjoy every delicious moment.",
+                );
+              }
+              final category = categories![index - 1];
+              return CategoryTile(category: category);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
 }

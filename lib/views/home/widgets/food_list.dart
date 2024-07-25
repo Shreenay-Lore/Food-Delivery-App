@@ -6,7 +6,6 @@ import 'package:food_delivery_app/hooks/fetch_foods.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:food_delivery_app/views/food/food_page.dart';
 import 'package:food_delivery_app/views/home/widgets/food_widget.dart';
-import 'package:get/get.dart';
 
 class FoodsList extends HookWidget {
   const FoodsList({super.key});
@@ -23,7 +22,7 @@ class FoodsList extends HookWidget {
     : Container(
       //color: Colors.black12,
       height: 236.h,
-      margin: EdgeInsets.only(bottom: 16.h,),
+      margin: EdgeInsets.only(bottom: 20.h,),
       padding: EdgeInsets.only(left: 0.w, top: 12.h, ),
       child: ListView(
         scrollDirection: Axis.horizontal,

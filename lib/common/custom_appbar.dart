@@ -8,7 +8,6 @@ import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/user_location_controller.dart';
 import 'package:food_delivery_app/views/profile/address_list_page.dart';
 import 'package:food_delivery_app/views/profile/profile_page.dart';
-import 'package:food_delivery_app/views/profile/add_address_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -62,7 +61,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Get.to(()=> const AddressesPage());
+                          Get.to(
+                            ()=> const AddressesPage(),
+                            transition: Transition.downToUp,
+                            duration: const Duration(milliseconds: 400),
+                          );
                         },
                         child: CustomText(
                           text: "Deliver to",

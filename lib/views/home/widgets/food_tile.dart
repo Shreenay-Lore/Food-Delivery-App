@@ -5,11 +5,8 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/controller/cart_controller.dart';
-import 'package:food_delivery_app/models/cart_request_model.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:food_delivery_app/views/food/food_page.dart';
-import 'package:get/get.dart';
 
 class FoodTile extends StatelessWidget {
   const FoodTile({super.key, required this.food, this.color});
@@ -19,7 +16,6 @@ class FoodTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartController cartController = Get.put(CartController());
 
     return GestureDetector(
       onTap: () {
@@ -30,7 +26,7 @@ class FoodTile extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: EdgeInsets.only(bottom: 16.h, left: 10.w, right: 10.w),
+        padding: EdgeInsets.only(bottom: 22.h, left: 10.w, right: 10.w),
         child: Material(
           elevation: 3, 
               borderRadius: BorderRadius.circular(9.r),
@@ -180,6 +176,3 @@ class FoodTile extends StatelessWidget {
   }
 }
 
-void showFoodPageBottomSheet(BuildContext context, FoodsModel food) {
-
-}

@@ -15,29 +15,30 @@ class CategoryFoodsList extends HookWidget {
     final hookResult = useFetchFoodsByCategory('41007428');
     List<FoodsModel>? foods = hookResult.data;
     final isLoading = hookResult.isLoading;
-    
+
     return SizedBox(
-      height: height,
-      width: width,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: isLoading
-      ? const FoodsListShimmer()         
+      ? const FoodsListShimmer()
       : Padding(
-        padding:  EdgeInsets.only(top: 20.h),
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: List.generate(
-            foods!.length,
-            (index){
-              FoodsModel food = foods[index];
-              return FoodTile(
-                color: kOffWhite,
-                food: food,
-              );
-            }
+          padding: EdgeInsets.only(top: 20.h),
+          child: ListView.builder(
+            itemCount: foods!.length + 1,
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              if (index == foods.length) {
+                return  SizedBox(height: 400.h,);
+              } else {
+                FoodsModel food = foods[index];
+                return FoodTile(
+                  color: kOffWhite,
+                  food: food,
+                );
+              }
+            },
           ),
         ),
-      ),
-      
     );
   }
 }

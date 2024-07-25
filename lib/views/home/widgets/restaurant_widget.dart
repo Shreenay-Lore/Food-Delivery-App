@@ -102,7 +102,7 @@ class RestaurantWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               const Icon(
-                                MaterialCommunityIcons.motorbike,
+                                MaterialCommunityIcons.truck_fast_outline,
                                 color: Colors.black, 
                                 size: 20
                               ),

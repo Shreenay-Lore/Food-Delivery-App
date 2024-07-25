@@ -32,7 +32,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
   late final PageController _pageController = PageController(initialPage: 0);
   GoogleMapController? _mapController;
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _postalCode = TextEditingController();
+  final TextEditingController _postalCode = TextEditingController(text: "444666");
   final TextEditingController _deliveryInstructions = TextEditingController();
   LatLng? _selectedPosition;
   List<dynamic> _placeList = [];

@@ -9,7 +9,7 @@ class FoodsListShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 12, top: 10),
+      padding: const EdgeInsets.only(left: 12, top: 60),
       height: height,
       child: ListView.builder(
           scrollDirection: Axis.vertical,

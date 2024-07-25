@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +5,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/controller/cart_controller.dart';
 import 'package:food_delivery_app/controller/tab_index_controller.dart';
-import 'package:food_delivery_app/hooks/fetch_cart_count.dart';
 import 'package:food_delivery_app/hooks/fetch_default_address.dart';
-import 'package:food_delivery_app/models/cart_count_response_mode.dart';
 import 'package:food_delivery_app/views/cart/cart_page.dart';
 import 'package:food_delivery_app/views/home/home_page.dart';
 import 'package:food_delivery_app/views/profile/profile_page.dart';

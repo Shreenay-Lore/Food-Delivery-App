@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/app_style.dart';
-import 'package:food_delivery_app/common/back_ground_container.dart';
 import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
@@ -27,21 +26,19 @@ class AddressesPage extends HookWidget {
       appBar: AppBar(
         backgroundColor: kWhite,
         elevation: 0,
-        title: CustomText(text: "Select Address",
-        style: appStyle(13, kGray, FontWeight.w600),
+        leadingWidth: 25.w,
+        title: CustomText(text: "SELECT ADDRESS",
+        style: appStyle(13.5, kGray, FontWeight.w600),
         ),
       ),
       body: Stack(
         children: [
           isLoading
           ? const FoodsListShimmer()         
-          : Padding(
-              padding: EdgeInsets.only(top: 30.h),
-              child: AddressListWidget(addresses: addresses!),
-            ),
+          : AddressListWidget(addresses: addresses!),
       
           Positioned(
-            bottom: 30.h,
+            bottom: 20.h,
             left: 12,
             right: 12,
             child: CustomButton(
@@ -49,10 +46,10 @@ class AddressesPage extends HookWidget {
                 Get.to(()=> const ShippingAddress());
               },
               text: 'Add Address',
-              backgroundColor: kPrimary,
+              backgroundColor: kDark,
               borderColor: kPrimary,
               textColor: kWhite,
-              height: 40.h,
+              height: 50.h,
             ),
           )
         ],

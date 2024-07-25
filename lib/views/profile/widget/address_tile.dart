@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -20,33 +19,70 @@ class AddressTile extends HookWidget {
   Widget build(BuildContext context) {
     final UserLocationController locationController = Get.put(UserLocationController());
 
-    return ListTile(
-        onTap: () {
-          locationController.setDefaultAddress(address!.id);
-        },
-        visualDensity: VisualDensity.compact,
-        leading: Icon(
-          SimpleLineIcons.location_pin,
-          color: kPrimary,
-          size: 28.h,
-        ),
-        title: CustomText(
-          text: address!.addressLine1,
-          style: appStyle(11, kDark, FontWeight.w500),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomText(
-              text: address!.postalCode,
-              style: appStyle(11, kGray, FontWeight.w500),
-            ),
-            CustomText(
-              text: "Tap to set address as default",
-              style: appStyle(8, kGray, FontWeight.w500),
+    return GestureDetector(
+      onTap: () {
+        locationController.setDefaultAddress(address!.id);
+      },
+      child: Container(
+        padding: EdgeInsets.all(8.0.h),
+        margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4.0,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-      );
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Ionicons.location,
+              color: kGray,
+              size: 30.h,
+            ),
+            SizedBox(width: 5.w),
+            SizedBox(
+              width: 280.w,
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: address!.deliveryInstructions,
+                    style: appStyle(11.5, kDark, FontWeight.w600),
+                  ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    address!.addressLine1,
+                    overflow: TextOverflow.ellipsis,
+                    style: appStyle(10, kDark, FontWeight.w500),
+                  ),
+                  SizedBox(height: 6.h),
+                  CustomText(
+                    text: "Tap to set address as default",
+                    style: appStyle(8, kGray, FontWeight.w400),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+
+              },
+              child: Icon(
+                Ionicons.close,
+                color: kGray,
+                size: 18.h,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

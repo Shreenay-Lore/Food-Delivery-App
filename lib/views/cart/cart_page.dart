@@ -70,7 +70,7 @@ class CartPage extends HookWidget {
         surfaceTintColor: kOffWhite,
         backgroundColor: kOffWhite,
         centerTitle: true,
-        title: CustomText(text: "CART", style: appStyle(14, kGray, FontWeight.w600)),
+        title: CustomText(text: "CART", style: appStyle(14, kDark, FontWeight.w600)),
         actions: const [
           CartCountContainer()
         ],
