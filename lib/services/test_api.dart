@@ -21,14 +21,14 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
-class AddAddress extends StatefulHookWidget {
-  const AddAddress({super.key});
+class TestLocation extends StatefulHookWidget {
+  const TestLocation({super.key});
 
   @override
-  State<AddAddress> createState() => _AddAddressState();
+  State<TestLocation> createState() => _TestLocationState();
 }
 
-class _AddAddressState extends State<AddAddress> {
+class _TestLocationState extends State<TestLocation> {
   late final PageController _pageController = PageController(initialPage: 0);
   GoogleMapController? _mapController;
   final TextEditingController _searchController = TextEditingController();

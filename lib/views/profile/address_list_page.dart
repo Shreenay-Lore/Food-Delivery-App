@@ -43,7 +43,7 @@ class AddressesPage extends HookWidget {
             right: 12,
             child: CustomButton(
               onTap: () {
-                Get.to(()=> const ShippingAddress());
+                Get.to(()=> const AddAddress());
               },
               text: 'Add Address',
               backgroundColor: kDark,

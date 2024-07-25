@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/app_style.dart';
-import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/views/profile/add_address_page.dart';
-import 'package:get/get.dart';
+
 
 Future<dynamic> showAddressSheet(BuildContext context){
     return showModalBottomSheet(
@@ -44,20 +42,20 @@ Future<dynamic> showAddressSheet(BuildContext context){
                   ),
                 ),
                 const Spacer(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: CustomButton(  
-                    height: 40.h,
-                    width: width,
-                    backgroundColor: kPrimary,
-                    borderColor: kPrimary,
-                    textColor: kWhite,
-                    text: 'Go to add address',
-                    onTap: () {
-                      Get.to(()=> const ShippingAddress());
-                    },
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 10.w),
+                //   child: CustomButton(  
+                //     height: 40.h,
+                //     width: width,
+                //     backgroundColor: kPrimary,
+                //     borderColor: kPrimary,
+                //     textColor: kWhite,
+                //     text: 'Go to add address',
+                //     onTap: () {
+                //       Get.to(()=> const AddAddress());
+                //     },
+                //   ),
+                // ),
                 SizedBox(height: 5.h,),
               ],
             ),
