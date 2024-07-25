@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'apiKey',
+    apiKey: 'sgsdsdsdsdgsdgsdsdgsd',
     appId: '1:4049608528:android:f239654a5c8864a0f3d655',
     messagingSenderId: '4049608528',
     projectId: 'flutter-food-delivery-ap-de254',
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'apiKey',
+    apiKey: 'AIzaSyBIETYZZKAd7eZKHz_HdH6dFbgXmiWPJwk',
     appId: '1:4049608528:ios:dc67b3d335d1e705f3d655',
     messagingSenderId: '4049608528',
     projectId: 'flutter-food-delivery-ap-de254',
