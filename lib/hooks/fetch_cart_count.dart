@@ -41,6 +41,8 @@ FetchHook useFetchCartItemsCount(){
         apiError.value = apiErrorFromJson(response.body);
       }
 
+
+
     }catch(e){
       debugPrint(e.toString());
     }finally{

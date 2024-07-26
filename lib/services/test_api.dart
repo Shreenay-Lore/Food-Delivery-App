@@ -184,7 +184,7 @@ class _TestLocationState extends State<TestLocation> {
                 }, 
                 icon: const Icon(AntDesign.rightcircleo, color: kDark,)
               ),
-          ),
+            ),
           ),
         ],
       ),
