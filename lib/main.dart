@@ -14,6 +14,26 @@ import 'package:get_storage/get_storage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: ".env");
+  Stripe.publishableKey=dotenv.env["STRIPE_PUBLISH_KEY"]!;
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  
+    if(!kDebugMode){
+      await FirebaseAppCheck.instance.activate(
+        androidProvider: AndroidProvider.playIntegrity,
+        appleProvider: AppleProvider.appAttest,
+        webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+      );
+    }else{
+      await FirebaseAppCheck.instance.activate(
+        androidProvider: AndroidProvider.debug,
+        appleProvider: AppleProvider.debug,
+      );
+    }
 
   await GetStorage.init();
   runApp(const MyApp());
@@ -37,7 +57,7 @@ class MyApp extends StatelessWidget {
             iconTheme: const IconThemeData(color: kDark),
             primarySwatch: Colors.grey,
           ),
-          //home: MainScreen(),
+          home: MainScreen(),
         );
       },
     );
