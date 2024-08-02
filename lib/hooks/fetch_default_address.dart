@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/common/address_bottom_sheet.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/controller/user_location_controller.dart';
+import 'package:food_delivery_app/pages/address/controller/user_location_controller.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -48,7 +47,7 @@ FetchDefaultAddress useFetchDefaultAddress(BuildContext context){
         var data = jsonDecode(response.body);
         box.write("defaultAddress", true);
         addresses.value = AddressResponseModel.fromJson(data);
-        controller.setAddress1 = addresses.value!.addressLine1;
+        controller.setAddress = addresses.value!.addressLine1;
       }else{
         box.write("defaultAddress", false);
         // showAddressSheet(context);

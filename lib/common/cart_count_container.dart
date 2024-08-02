@@ -4,7 +4,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/controller/cart_controller.dart';
+import 'package:food_delivery_app/pages/cart/controller/cart_controller.dart';
 import 'package:get/get.dart';
 
 class CartCountContainer extends StatelessWidget {

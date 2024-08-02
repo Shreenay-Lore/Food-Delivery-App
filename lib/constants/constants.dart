@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-String googleApiKey = 'AIzaSyDBVyDL5Z7gAdzMtcM8xhoL7hHo4hhpv0s';
+String googleApiKey = 'AIzaSyC5vJVUz_YUxTgeWBTvoLM17oLgYvFiaTU';
 
 
 const kPrimary = Color(0xFF30b9b2);
@@ -21,7 +21,7 @@ double height = 825.h;
 double width = 375.w;
 
 
-const String appBaseUrl = "http://192.168.1.6:6013";
+const String appBaseUrl = "http://192.168.1.8:6013";
 
 final List<String> verificationReasons =[
   'Real-time Updates: Get instant notifications about your order status.',

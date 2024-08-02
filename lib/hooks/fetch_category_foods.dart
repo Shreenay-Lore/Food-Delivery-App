@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/controller/category_controller.dart';
+import 'package:food_delivery_app/pages/categories/controller/category_controller.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:food_delivery_app/models/hook_models/foods_hook.dart';
