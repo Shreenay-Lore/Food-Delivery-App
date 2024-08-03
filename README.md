@@ -3,9 +3,10 @@
 Developed a cutting-edge, user-friendly mobile application using Flutter, aimed at enhancing the food ordering experience. The app allows users to seamlessly browse a diverse range of restaurants, explore menus, and place orders with ease.
 
 
+
 ## Key Features:
 
-##Intuitive User Interface:
+Intuitive User Interface:
 - Designed a sleek and intuitive user interface that offers a seamless navigation experience. Users can effortlessly browse through various restaurants and cuisines.
 
 Secure Payment Processing:
@@ -19,6 +20,7 @@ Real-Time Location Tracking:
 
 Secure User Verification:
 - Implemented Firebase phone authentication to ensure secure and reliable user verification. This method enhances security and provides a seamless sign-in experience.
+
 
 
 ## Technical Highlights:
