@@ -14,114 +14,13 @@ import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/pages/address/controller/user_location_controller.dart';
 import 'package:food_delivery_app/hooks/fetch_default_address.dart';
-import 'package:food_delivery_app/models/address_model.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/pages/auth/widget/email_textfield.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 
-class AddAddress extends StatefulHookWidget {
+class AddAddress extends HookWidget {
   const AddAddress({super.key});
-
-  @override
-  State<AddAddress> createState() => _AddAddressState();
-}
-
-class _AddAddressState extends State<AddAddress> {
-  late final PageController _pageController = PageController(initialPage: 0);
-  GoogleMapController? _mapController;
-  final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _postalCode = TextEditingController();
-  final TextEditingController _deliveryInstructions = TextEditingController();
-  LatLng? _selectedPosition = const LatLng(28.7041, 77.1025); 
-  bool _isLoadingLocation = false;
-
-  @override
-  void initState() {
-    _pageController.addListener(() {
-      setState(() {});
-    });
-    _updateSearchController(_selectedPosition!); 
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _getCurrentLocation() async {
-    setState(() {
-      _isLoadingLocation = true;
-    });
-
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      setState(() {
-        _isLoadingLocation = false;
-      });
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        setState(() {
-          _isLoadingLocation = false;
-        });
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      setState(() {
-        _isLoadingLocation = false;
-      });
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    setState(() {
-      _selectedPosition = LatLng(position.latitude, position.longitude);
-      _updateSearchController(_selectedPosition!);
-      moveToSelectedPosition();
-      _isLoadingLocation = false;
-    });
-  }
-
-  Future<void> _updateSearchController(LatLng position) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-    if (placemarks.isNotEmpty) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _searchController.text = "${place.name}, ${place.subLocality}, ${place.locality}-${place.postalCode}, ${place.administrativeArea}, ${place.country}";
-        _postalCode.text = "${place.postalCode}";
-      });
-    }
-  }
-
-  void moveToSelectedPosition() {
-    if (_selectedPosition != null && _mapController != null) {
-      _mapController!.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: _selectedPosition!,
-            zoom: 15,
-          ),
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,14 +38,14 @@ class _AddAddressState extends State<AddAddress> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: PageView(
-          controller: _pageController,
+          controller: locationController.pageController,
           physics: const NeverScrollableScrollPhysics(),
           pageSnapping: false,
           onPageChanged: (index) {
-            _pageController.jumpToPage(index);
+            locationController.pageController.jumpToPage(index);
           },
           children: [
-            googleMapPage(),
+            googleMapPage(locationController),
             submitAddressPage(locationController, defaultAddress, isLoading)      
           ],
         ),
@@ -176,7 +75,7 @@ class _AddAddressState extends State<AddAddress> {
             : IconButton(
                 onPressed: () {
                   locationController.setTabIndex = 0;
-                  _pageController.previousPage(
+                  locationController.pageController.previousPage(
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.easeIn,
                   );
@@ -194,7 +93,7 @@ class _AddAddressState extends State<AddAddress> {
                   child: IconButton(
                     onPressed: () {
                       locationController.setTabIndex = 1;
-                      _pageController.nextPage(
+                      locationController.pageController.nextPage(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn,
                       );
@@ -207,28 +106,25 @@ class _AddAddressState extends State<AddAddress> {
     );
   }
 
-  Widget googleMapPage(){
-    return Stack(
+  Widget googleMapPage(UserLocationController locationController){
+    return Obx(() => Stack(
       children: [
         GoogleMap(
-          onMapCreated: (GoogleMapController controller) {
-            _mapController = controller;
+          onMapCreated: (GoogleMapController mapController) {
+            locationController.mapController = mapController;
           },
           initialCameraPosition: CameraPosition(
-            target: _selectedPosition ?? const LatLng(28.7041, 77.1025),
+            target: locationController.selectedPosition.value,
             zoom: 15,
           ),
           markers: Set.of([
             Marker(
               markerId: const MarkerId('Your Location'),
-              position: _selectedPosition!,
+              position: locationController.selectedPosition.value,
               draggable: true,
               onDragEnd: (LatLng position) {
-                //locationController.getUserAddress(position);
-                setState(() {
-                  _selectedPosition = position;
-                  _updateSearchController(_selectedPosition!);
-                });
+                locationController.selectedPosition.value = position;
+                locationController.updateSearchController(position);
               },
             ),
           ]),
@@ -239,18 +135,20 @@ class _AddAddressState extends State<AddAddress> {
           bottom: 20.h,
           child: CustomButton(
             height: 40.h,
-            text: _isLoadingLocation ? "Loading..." : "Get Current Location",
+            text: locationController.isLoadingLocation.value ? "Loading..." : "Get Current Location",
             backgroundColor: kDark,
             textColor: kWhite,
-            onTap: _isLoadingLocation ? null : _getCurrentLocation,
+            onTap: locationController.isLoadingLocation.value ? null : locationController.getCurrentLocation,
           ),
         ),
       ],
-    );
+    ));
   }
 
-  Widget submitAddressPage
-        (UserLocationController locationController, AddressResponseModel? defaultAddress, bool isLoading){
+  Widget submitAddressPage(
+      UserLocationController locationController, 
+      AddressResponseModel? defaultAddress, 
+      bool isLoading){
     return BackGroundContainer(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -258,21 +156,21 @@ class _AddAddressState extends State<AddAddress> {
           children: [
             SizedBox(height: 30.h),
             EmailTextField(
-              controller: _searchController,
+              controller: locationController.searchController,
               hintText: "Address",
               prefixIcon: const Icon(Ionicons.location_sharp, size: 22, color: kGrayLight),
               keyboardType: TextInputType.text,
             ),
             SizedBox(height: 15.h),
             EmailTextField(
-              controller: _postalCode,
+              controller: locationController.postalCode,
               hintText: "Postal Code",
               prefixIcon: const Icon(Ionicons.location_sharp, size: 22, color: kGrayLight),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 15.h),
             EmailTextField(
-              controller: _deliveryInstructions,
+              controller: locationController.deliveryInstructions,
               hintText: "Delivery Instructions",
               prefixIcon: const Icon(AntDesign.menu_fold, size: 22, color: kGrayLight),
               keyboardType: TextInputType.text,
@@ -310,22 +208,7 @@ class _AddAddressState extends State<AddAddress> {
               textColor: kWhite,
               text: isLoading ? 'Loading...' : 'S U B M I T',
               onTap: () {
-                if (_searchController.text.isNotEmpty &&
-                    _postalCode.text.isNotEmpty &&
-                    _deliveryInstructions.text.isNotEmpty) {
-                  AddressModel model = AddressModel(
-                    addressLine1: _searchController.text,
-                    postalCode: _postalCode.text,
-                    addressModelDefault: locationController.isDefault,
-                    deliveryInstructions: _deliveryInstructions.text,
-                    latitude: _selectedPosition!.latitude,
-                    longitude: _selectedPosition!.longitude,
-                  );
-
-                  String data = addressModelToJson(model);
-
-                  locationController.addAddress(data);
-                }
+                locationController.submitAddress(defaultAddress);
               },
             ),
           ],
