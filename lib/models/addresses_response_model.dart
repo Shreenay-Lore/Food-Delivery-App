@@ -5,26 +5,26 @@ List<AddressResponseModel> addressResponseModelFromJson(String str) => List<Addr
 String addressResponseModelToJson(List<AddressResponseModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AddressResponseModel {
-    final String id;
-    final String userId;
-    final String addressLine1;
-    final String postalCode;
-    final bool addressResponseModelDefault;
-    final String deliveryInstructions;
-    final double latitude;
-    final double longitude;
-    final int v;
+    final String? id;
+    final String? userId;
+    final String? addressLine1;
+    final String? postalCode;
+    final bool? addressResponseModelDefault;
+    final String? deliveryInstructions;
+    final double? latitude;
+    final double? longitude;
+    final int? v;
 
     AddressResponseModel({
-        required this.id,
-        required this.userId,
-        required this.addressLine1,
-        required this.postalCode,
-        required this.addressResponseModelDefault,
-        required this.deliveryInstructions,
-        required this.latitude,
-        required this.longitude,
-        required this.v,
+        this.id,
+        this.userId,
+        this.addressLine1,
+        this.postalCode,
+        this.addressResponseModelDefault,
+        this.deliveryInstructions,
+        this.latitude,
+        this.longitude,
+        this.v,
     });
 
     factory AddressResponseModel.fromJson(Map<String, dynamic> json) => AddressResponseModel(

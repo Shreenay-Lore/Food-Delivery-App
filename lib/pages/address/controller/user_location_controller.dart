@@ -1,23 +1,20 @@
 // ignore_for_file: prefer_final_fields
 
-
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/models/address_model.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/api_error.dart';
-import 'package:food_delivery_app/pages/main_screen/entry_point.dart';
+import 'package:food_delivery_app/repository/address/address_repository.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 
 class UserLocationController extends GetxController{
   // GetStorage instance to access stored data
   final box = GetStorage();
+  final AddressRepository _addressService = AddressRepository();
 
   // Observable variables for default address status, tab index, and address string
   RxBool _isDefault = false.obs;
@@ -35,102 +32,59 @@ class UserLocationController extends GetxController{
   set setAddress(String value) => _address.value = value;
 
   // Function to add an address using the Google API
-  void addAddress(String data,) async {
-    String accessToken = box.read('token');
+  void addAddress(String data,) {
+    _addressService.addAddress(data);
+  }
 
-    Uri url = Uri.parse('$appBaseUrl/api/address');
 
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization' : 'Bearer $accessToken',
-    };
+  // Function to fetch all saved address 
+  RxList<AddressResponseModel> addresses = <AddressResponseModel>[].obs;
+  RxBool  isLoading = false.obs;
+  var error = ''.obs;
+  var apiError = ApiError().obs;
 
-    try{  
-      print('Making request to: $url');
-
-      var response = await http.post(
-        url,
-        headers: headers,
-        body: data,
-      );
-      
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      
-      if(response.statusCode == 201){
-        
-        Get.snackbar(
-          "Your address has been added.", "Order Food! ",
-          colorText: kWhite,
-          backgroundColor: kPrimary,
-          icon: const Icon(Ionicons.fast_food_outline)
-        );
-
-        Get.offAll(()=> MainScreen());
-
-      }else{
-        var error = apiErrorFromJson(response.body);
-        Get.snackbar( 
-          "Failed to add address", error.message,
-          colorText: kWhite,
-          backgroundColor: kRed,
-          icon: const Icon(Icons.error)
-        );
+  Future<void> fetchAllAddresses() async {
+    isLoading(true);
+    try {
+      var result = await _addressService.fetchAllAddresses();
+      if (result != null) {
+        addresses.assignAll(result);
       }
-
-    }catch(e){
-      debugPrint(e.toString());
+    } catch (e) {
+      error(e.toString());
+    } finally {
+      isLoading(false);
     }
   }
-  
+
+
   // Function to set an address as the default address
-  void setDefaultAddress(String addressId,) async {
-    String accessToken = box.read('token');
+  void setDefaultAddress(String addressId,) {
+    _addressService.setDefaultAddress(addressId);
+  }
 
-    Uri url = Uri.parse('$appBaseUrl/api/address/default/$addressId');
 
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization' : 'Bearer $accessToken',
-    };
+  // Function to fetch current default address
+  final defaultAddress = AddressResponseModel().obs;
 
-    try{  
-      print('Making request to: $url');
-
-      var response = await http.patch(
-        url,
-        headers: headers,
-      );
-      
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      
-      if(response.statusCode == 200){
-        
-        Get.snackbar(
-          "Address set as default", "Order Food! ",
-          colorText: kWhite,
-          backgroundColor: kDark,
-          icon: const Icon(Ionicons.fast_food_outline)
-        );
-
-        Get.offAll(()=> MainScreen());
-
-      }else{
-        var error = apiErrorFromJson(response.body);
-        Get.snackbar( 
-          "Failed to set address as default", error.message,
-          colorText: kWhite,
-          backgroundColor: kRed,
-          icon: const Icon(Icons.error)
-        );
-
+  Future<void> fetchDefaultAddress() async {
+    isLoading(true);
+    try {
+      var result = await _addressService.fetchDefaultAddress();
+      if (result != null) {
+        box.write("defaultAddress", true);
+        defaultAddress.value = result;
+        setAddress = defaultAddress.value.addressLine1!;
       }
-
-    }catch(e){
-      debugPrint(e.toString());
+    } catch (e) {
+      box.write("defaultAddress", false);
+      error(e.toString());
+    } finally {
+      isLoading(false);
     }
   }
+
+  
   
   // Controllers for page view and Google Map
   final PageController pageController = PageController(initialPage: 0);
@@ -148,6 +102,8 @@ class UserLocationController extends GetxController{
   @override
   void onInit() {
     super.onInit();
+    fetchAllAddresses();
+    fetchDefaultAddress();
     pageController.addListener(() {
       update();
     });
@@ -156,10 +112,10 @@ class UserLocationController extends GetxController{
 
   @override
   void onClose() {
-    pageController.dispose();
-    searchController.dispose();
-    postalCode.dispose();
-    deliveryInstructions.dispose();
+    // pageController.dispose();
+    // searchController.dispose();
+    // postalCode.dispose();
+    // deliveryInstructions.dispose();
     super.onClose();
   }
 
@@ -244,6 +200,7 @@ class UserLocationController extends GetxController{
       addAddress(data);
     }
   }
+  
 
 }
 

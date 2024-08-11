@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/common/app_style.dart';
@@ -13,21 +12,17 @@ import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/pages/address/controller/user_location_controller.dart';
-import 'package:food_delivery_app/hooks/fetch_default_address.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/pages/auth/widget/email_textfield.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class AddAddress extends HookWidget {
+class AddAddress extends StatelessWidget {
   const AddAddress({super.key});
 
   @override
   Widget build(BuildContext context) {
     final UserLocationController locationController = Get.put(UserLocationController());
-    final hookResult = useFetchDefaultAddress(context);
-    AddressResponseModel? defaultAddress = hookResult.data;
-    final isLoading = hookResult.isLoading;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -46,7 +41,11 @@ class AddAddress extends HookWidget {
           },
           children: [
             googleMapPage(locationController),
-            submitAddressPage(locationController, defaultAddress, isLoading)      
+            submitAddressPage(
+              locationController, 
+              locationController.defaultAddress.value, 
+              locationController.isLoading.value
+            ),      
           ],
         ),
       ),

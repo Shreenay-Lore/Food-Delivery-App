@@ -7,10 +7,10 @@ import 'package:food_delivery_app/common/common_appbar.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/pages/address/controller/user_location_controller.dart';
 import 'package:food_delivery_app/pages/auth/controller/login_controller.dart';
 import 'package:food_delivery_app/pages/orders/controller/orders_controller.dart';
 import 'package:food_delivery_app/hooks/fetch_cart_items.dart';
-import 'package:food_delivery_app/hooks/fetch_default_address.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/cart_response_model.dart';
 import 'package:food_delivery_app/models/login_response.dart';
@@ -33,8 +33,8 @@ class CartPage extends HookWidget {
     final isLoading = hookResult.isLoading;
     final refetch = hookResult.refetch;
     
-    final data = useFetchDefaultAddress(context);
-    AddressResponseModel? address = data.data;
+    final UserLocationController locationController = Get.put(UserLocationController());
+    AddressResponseModel? address = locationController.defaultAddress.value;
 
     LoginResponse? user;
 

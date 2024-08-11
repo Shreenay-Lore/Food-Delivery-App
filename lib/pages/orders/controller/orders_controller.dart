@@ -89,7 +89,7 @@ class OrdersController extends GetxController{
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Order Failed ", error.message,
+          "Order Failed ", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error)
@@ -111,10 +111,10 @@ class OrdersController extends GetxController{
         amount: amountInPaise.toString(),
         currency: "INR",
         name: "User Name",
-        address: address!.addressLine1,
-        pin: address.postalCode,
-        city: address.addressLine1,
-        state: address.addressLine1,
+        address: address!.addressLine1!,
+        pin: address.postalCode!,
+        city: address.addressLine1!,
+        state: address.addressLine1!,
         country: "India",
       );
 
@@ -173,19 +173,19 @@ class OrdersController extends GetxController{
         orderStatus: 'Out_for_Delivery',
         paymentMethod: 'Stripe',
         paymentStatus: 'Completed',
-        userId: address!.userId,
+        userId: address!.userId!,
         orderItems: orderItems,
         orderTotal: totalPrice - 85.40,
         deliveryFee: 50,
         grandTotal: totalPrice,
-        deliveryAddress: address.id,
+        deliveryAddress: address.id!,
         restaurantAddress: "670 Post St, San Francisco, CA 94109, United States",
         restaurantId: "665dff25a1e02e570bf7fac9",
         restaurantCoords: [
           37.78792117665919,
           -122.41325651079953,
         ],
-        recipientCoords: [address.latitude, address.longitude],
+        recipientCoords: [address.latitude!, address.longitude!],
       );
 
       String orderData = orderRequestModelToJson(order);

@@ -82,7 +82,7 @@ class PhoneVerificationController extends GetxController{
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Failed to verify phone number", error.message,
+          "Failed to verify phone number", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error)

@@ -58,7 +58,7 @@ class RegistrationController extends GetxController{
         var error = apiErrorFromJson(response.body);
 
         Get.snackbar(
-          "Failed to register", error.message,
+          "Failed to register", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error)

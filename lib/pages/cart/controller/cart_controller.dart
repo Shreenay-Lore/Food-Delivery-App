@@ -71,7 +71,7 @@ class CartController extends GetxController{
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Error", error.message,
+          "Error", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error_outline, color: kLightWhite,)
@@ -119,7 +119,7 @@ class CartController extends GetxController{
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Error", error.message,
+          "Error", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error_outline, color: kLightWhite,)
@@ -156,7 +156,7 @@ class CartController extends GetxController{
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Error", error.message,
+          "Error", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error_outline, color: kLightWhite,)

@@ -20,7 +20,7 @@ class AddressTile extends HookWidget {
 
     return GestureDetector(
       onTap: () {
-        locationController.setDefaultAddress(address!.id);
+        locationController.setDefaultAddress(address!.id!);
       },
       child: Container(
         padding: EdgeInsets.all(8.0.h),
@@ -52,12 +52,12 @@ class AddressTile extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: address!.deliveryInstructions,
+                    text: address!.deliveryInstructions!,
                     style: appStyle(11.5, kDark, FontWeight.w600),
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    address!.addressLine1,
+                    address!.addressLine1!,
                     overflow: TextOverflow.ellipsis,
                     style: appStyle(10, kDark, FontWeight.w500),
                   ),

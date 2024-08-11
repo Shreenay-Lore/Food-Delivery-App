@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/hooks/fetch_all_categories.dart';
 import 'package:food_delivery_app/models/categories_model.dart';
+import 'package:food_delivery_app/pages/categories/controller/category_controller.dart';
 import 'package:food_delivery_app/pages/categories/widgets/header_widget.dart';
 import 'package:food_delivery_app/pages/categories/widgets/intro_text.dart';
+import 'package:get/get.dart';
 import 'widgets/category_tile.dart';
 
-class AllCategories extends HookWidget {
+class AllCategories extends StatelessWidget {
   const AllCategories({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final hookResult = useFetchAllCategories();
-    final categories = hookResult.data;
-    final isLoading = hookResult.isLoading;
+    final CategoryController controller = Get.put(CategoryController());
 
     return Scaffold(
       backgroundColor: kWhite,
-      body: isLoading 
-        ? const FoodsListShimmer() 
-        : buildContent(categories),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const FoodsListShimmer();
+        } else {
+          return buildContent(controller.allCategories);
+        }
+      }),
+      
     );
   }
 

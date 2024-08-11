@@ -5,12 +5,12 @@ CartCountResponseModel cartCountResponseModelFromJson(String str) => CartCountRe
 String cartCountResponseModelToJson(CartCountResponseModel data) => json.encode(data.toJson());
 
 class CartCountResponseModel {
-    final bool status;
-    final int count;
+    final bool? status;
+    final int? count;
 
     CartCountResponseModel({
-        required this.status,
-        required this.count,
+        this.status,
+        this.count,
     });
 
     factory CartCountResponseModel.fromJson(Map<String, dynamic> json) => CartCountResponseModel(

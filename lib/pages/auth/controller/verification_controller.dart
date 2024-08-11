@@ -83,7 +83,7 @@ class VerificationController extends GetxController{
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Failed to verify account", error.message,
+          "Failed to verify account", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error)

@@ -1,83 +1,99 @@
-
-
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:food_delivery_app/data/network/base_api_services.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:food_delivery_app/constants/constants.dart';
 
-import '../app_exceptions.dart';
+class ApiClient {
+  final box = GetStorage();
 
-class NetworkApiServices extends BaseApiServices {
+  Future<http.Response> getRequest(String endpoint) async {
+    String accessToken = box.read('token');
+    Uri url = Uri.parse('$appBaseUrl$endpoint');
 
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
 
-  @override
-  Future<dynamic> getApi(String url)async{
-
-    if (kDebugMode) {
-      print(url);
-    }
-
-    dynamic responseJson ;
     try {
-
-      final response = await http.get(Uri.parse(url)).timeout( const Duration(seconds: 10));
-      responseJson  = returnResponse(response) ;
-    }on SocketException {
-      throw InternetException('');
-    }on RequestTimeOut {
-      throw RequestTimeOut('');
-
+      print('Making request to: $url');
+      var response = await http.get(url, headers: headers);
+      return response;
+    } catch (e) {
+      throw Exception('Failed to make GET request: $e');
     }
-    print(responseJson);
-    return responseJson ;
-
   }
 
+  Future<http.Response> postRequest({required String endpoint, required String body}) async {
+    String accessToken = box.read('token');
+    Uri url = Uri.parse('$appBaseUrl$endpoint');
 
-  @override
-  Future<dynamic> postApi(var data , String url)async{
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
 
-    if (kDebugMode) {
-      print(url);
-      print(data);
-    }
-
-    dynamic responseJson ;
     try {
-
-      final response = await http.post(Uri.parse(url),
-        body: data  
-        //body: jsonEncode()  //if data is in raw form
-        
-      ).timeout( const Duration(seconds: 10));
-      responseJson  = returnResponse(response) ;
-    }on SocketException {
-      throw InternetException('');
-    }on RequestTimeOut {
-      throw RequestTimeOut('');
-
-    }
-    if (kDebugMode) {
-      print(responseJson);
-    }
-    return responseJson ;
-
-  }
-
-  dynamic returnResponse(http.Response response){
-    switch(response.statusCode){
-      case 200:
-        dynamic responseJson = jsonDecode(response.body);
-        return responseJson ;
-      case 400:
-        dynamic responseJson = jsonDecode(response.body);
-        return responseJson ;
-
-      default :
-        throw FetchDataException('Error accoured while communicating with server '+response.statusCode.toString()) ;
+      print('Making request to: $url');
+      var response = await http.post(url, headers: headers, body: body);
+      return response;
+    } catch (e) {
+      throw Exception('Failed to make POST request: $e');
     }
   }
 
+  Future<http.Response> putRequest(String endpoint, Map<String, dynamic> body) async {
+    String accessToken = box.read('token');
+    Uri url = Uri.parse('$appBaseUrl$endpoint');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = await http.put(url, headers: headers, body: jsonEncode(body));
+      return response;
+    } catch (e) {
+      throw Exception('Failed to make PUT request: $e');
+    }
+  }
+
+  Future<http.Response> patchRequest(String endpoint) async {
+    String accessToken = box.read('token');
+    Uri url = Uri.parse('$appBaseUrl$endpoint');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      print('Making request to: $url');
+      var response = await http.patch(url, headers: headers);
+      return response;
+    } catch (e) {
+      throw Exception('Failed to make PATCH request: $e');
+    }
+  }
+
+  Future<http.Response> deleteRequest(String endpoint, [Map<String, dynamic>? body]) async {
+    String accessToken = box.read('token');
+    Uri url = Uri.parse('$appBaseUrl$endpoint');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      var response = body != null
+          ? await http.delete(url, headers: headers, body: jsonEncode(body))
+          : await http.delete(url, headers: headers);
+      return response;
+    } catch (e) {
+      throw Exception('Failed to make DELETE request: $e');
+    }
+  }
 }

@@ -51,6 +51,7 @@ class CartBottomNavBar extends StatelessWidget {
           else if(addressTrigger == false){
             showAddressSheet(context);
           }else{
+            print("ADDDDDDDDDDDDDDDDDDDD $address");
             await initPaymentSheet(grandTotalPrice, cartItems, address);
           }
           

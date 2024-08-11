@@ -79,7 +79,7 @@ class LoginController extends GetxController{
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar(
-          "Failed to login", error.message,
+          "Failed to login", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error)
