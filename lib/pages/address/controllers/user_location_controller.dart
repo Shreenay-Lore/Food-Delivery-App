@@ -93,7 +93,7 @@ class UserLocationController extends GetxController{
   // Controllers for text input fields
   final TextEditingController searchController = TextEditingController();
   final TextEditingController postalCode = TextEditingController();
-  final TextEditingController deliveryInstructions = TextEditingController();
+  final TextEditingController saveAddressAsController = TextEditingController();
 
   // Observable variables for selected map position and loading status
   Rx<LatLng> selectedPosition = const LatLng(28.7041, 77.1025).obs;
@@ -186,12 +186,12 @@ class UserLocationController extends GetxController{
   void submitAddress( AddressResponseModel? defaultAddress) {
     if (searchController.text.isNotEmpty &&
         postalCode.text.isNotEmpty &&
-        deliveryInstructions.text.isNotEmpty) {
+        saveAddressAsController.text.isNotEmpty) {
       AddressModel model = AddressModel(
         addressLine1: searchController.text,
         postalCode: postalCode.text,
         addressModelDefault: isDefault,
-        deliveryInstructions: deliveryInstructions.text,
+        deliveryInstructions: saveAddressAsController.text,
         latitude: selectedPosition.value.latitude,
         longitude: selectedPosition.value.longitude,
       );

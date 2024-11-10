@@ -5,7 +5,7 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/bottom_sheets/phone_verification_bottom_sheet.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/pages/auth/controller/login_controller.dart';
+import 'package:food_delivery_app/pages/auth/controllers/login_controller.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/cart_response_model.dart';
 import 'package:food_delivery_app/models/login_response.dart';
@@ -45,9 +45,9 @@ class CartBottomNavBar extends StatelessWidget {
           if(user == null){
             Get.to(()=> const LoginPage());
           }
-          else if(user.phoneVerification == false){
-            showVerificationSheet(context);
-          }
+          // else if(user.phoneVerification == false){
+          //   showVerificationSheet(context);
+          // }
           else if(addressTrigger == false){
             showAddressSheet(context);
           }else{

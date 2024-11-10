@@ -1,4 +1,4 @@
-import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/hook_models/hook_result.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,7 +16,7 @@ FetchHook useFetchRestaurants(String code){
     isLoading.value = true;
 
     try{
-      Uri url = Uri.parse('$appBaseUrl/api/restaurant/$code');
+      Uri url = Uri.parse('${AppUrl.baseUrl}/api/restaurant/$code');
       final response = await http.get(url);
       
       if(response.statusCode == 200){

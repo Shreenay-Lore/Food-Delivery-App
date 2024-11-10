@@ -5,22 +5,20 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/pages/address/controller/user_location_controller.dart';
+import 'package:food_delivery_app/pages/address/controllers/user_location_controller.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
-import 'package:get/get.dart';
 
 class AddressTile extends HookWidget {
-  const AddressTile({super.key, this.address});
+  const AddressTile({super.key, this.address, required this.locationController});
 
   final AddressResponseModel? address;
+  final UserLocationController? locationController;
 
   @override
   Widget build(BuildContext context) {
-    final UserLocationController locationController = Get.put(UserLocationController());
-
     return GestureDetector(
       onTap: () {
-        locationController.setDefaultAddress(address!.id!);
+        locationController!.setDefaultAddress(address!.id!);
       },
       child: Container(
         padding: EdgeInsets.all(8.0.h),

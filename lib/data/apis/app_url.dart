@@ -1,6 +1,6 @@
 class AppUrl {
 
-  static const String baseUrl = 'http://192.168.1.4:6090';
+  static const String baseUrl = "http://192.168.1.4:6013";
 
   ///Address APIs..
   static const String addAddressApi = '/api/address';

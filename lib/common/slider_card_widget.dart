@@ -1,8 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -15,6 +15,35 @@ class AdvertisementCarousel extends StatefulWidget {
 
 class _AdvertisementCarouselState extends State<AdvertisementCarousel> {
   int activeIndex = 0;
+  final PageController _pageController = PageController(viewportFraction: 1);
+  Timer? _autoScrollTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    startAutoScroll();
+  }
+
+  @override
+  void dispose() {
+    _autoScrollTimer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void startAutoScroll() {
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      int nextPage = activeIndex + 1;
+      if (nextPage >= advertisementImgList.length) {
+        nextPage = 0;
+      }
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +53,15 @@ class _AdvertisementCarouselState extends State<AdvertisementCarousel> {
         children: [
           SizedBox(
             height: 115.h,
-            width: double.infinity,
-            child: CarouselSlider.builder(
+            child: PageView.builder(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  activeIndex = index;
+                });
+              },
               itemCount: advertisementImgList.length,
-              itemBuilder: (context, index, realIndex) {
+              itemBuilder: (context, index) {
                 final image = advertisementImgList[index];
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.h),
@@ -41,16 +75,6 @@ class _AdvertisementCarouselState extends State<AdvertisementCarousel> {
                   ),
                 );
               },
-              options: CarouselOptions(
-                initialPage: 0,
-                autoPlay: true,
-                viewportFraction: 1,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    activeIndex = index;
-                  });
-                },
-              ),
             ),
           ),
           SizedBox(height: 8.h),
@@ -61,13 +85,14 @@ class _AdvertisementCarouselState extends State<AdvertisementCarousel> {
   }
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
-    activeIndex: activeIndex,
-    count: advertisementImgList.length,
-    effect: WormEffect(
-      dotHeight: 8.h,
-      dotWidth: 8.h,
-      activeDotColor: kDark,
-      dotColor: kGrayLight,
-    ),
-  );
+        activeIndex: activeIndex,
+        count: advertisementImgList.length,
+        effect: WormEffect(
+          dotHeight: 8.h,
+          dotWidth: 8.h,
+          activeDotColor: kDark,
+          dotColor: kGrayLight,
+        ),
+      );
 }
+

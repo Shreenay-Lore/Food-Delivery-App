@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:food_delivery_app/pages/auth/controller/login_controller.dart';
+import 'package:food_delivery_app/pages/auth/controllers/login_controller.dart';
 import 'package:food_delivery_app/models/login_response.dart';
-import 'package:food_delivery_app/pages/auth/login_redirect.dart';
-import 'package:food_delivery_app/pages/auth/verification_page.dart';
+import 'package:food_delivery_app/pages/auth/login_page.dart';
+import 'package:food_delivery_app/pages/auth/email_verification_page.dart';
 import 'package:food_delivery_app/common/common_appbar.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/pages/profile/widget/profile_tile_widget.dart';
@@ -31,11 +31,11 @@ class ProfilePage extends StatelessWidget {
     }
 
     if(token == null){
-      return const LoginRedirectPage();
+      return const LoginPage();
     }
 
     if(user != null &&  user.verification == false){
-      return const VerificationPage();
+      return const EmailVerificationPage();
     }
     
     return Scaffold(
@@ -82,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   ProfileTileWidget(
                     onTap: (){
-                      Get.toNamed(AppRoutes.onAllAddressesPage);
+                      Get.toNamed(AppRoutes.onAddressListPage);
                     },
                     title: "Addresses",
                     icon: SimpleLineIcons.location_pin,

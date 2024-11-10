@@ -5,24 +5,33 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/login_response.dart';
-import 'package:food_delivery_app/pages/main_screen/entry_point.dart';
+import 'package:food_delivery_app/routes/names.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-class VerificationController extends GetxController{
+class PhoneVerificationController extends GetxController{
   final box = GetStorage();
 
-  String _otp  = "";
+  String _phone  = "";
 
-  String get otp => _otp;
+  String get phone => _phone;
 
-  set setOtp(String value){
-    _otp = value;
+  set setPhoneNumber(String value){
+    _phone = value;
+    print(phone);
   }
 
+  String _verificationId  = "";
+
+  String get verificationId => _verificationId;
+
+  set setVerificationId(String value){
+    _verificationId = value;
+  }
   
   RxBool _isLoading  = false.obs;
 
@@ -33,11 +42,11 @@ class VerificationController extends GetxController{
   }
 
 
-  void verificationFunction() async {
+  void phoneVerificationFunction() async {
     setLoading = true;
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/users/verify/$otp');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/users/verify_phone/$phone');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -67,30 +76,27 @@ class VerificationController extends GetxController{
         box.write("userId", data.id);
         box.write("verification", data.verification);
 
-        setLoading = false;
-        
         Get.snackbar(
-          "Your account is successfully verified.", "Order Food Now! ",
+          "Your phone number is successfully verified.", "Order Food Now! ",
           colorText: kWhite,
           backgroundColor: kPrimary,
           icon: const Icon(Ionicons.fast_food_outline)
         );
 
-        Get.offAll(()=> MainScreen(),
-          transition: Transition.fade,
-          duration: const Duration(milliseconds: 900),);
+        Get.offAllNamed(AppRoutes.onMainNavBarPage);
+
+        setLoading = false;
 
       }else{
         var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Failed to verify account", error.message!,
+          "Failed to verify phone number", error.message!,
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error)
         );
 
       }
-
     }catch(e){
       debugPrint(e.toString());
     }

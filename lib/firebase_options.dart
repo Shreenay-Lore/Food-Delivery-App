@@ -50,16 +50,16 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'APIKEY',
-    appId: 'APIKEY',
+    apiKey: 'AIzaSyC5vJVUz_YUxTgeWBTvoLM17oLgYvFiaTU',
+    appId: '1:4049608528:android:f239654a5c8864a0f3d655',
     messagingSenderId: '4049608528',
     projectId: 'flutter-food-delivery-ap-de254',
     storageBucket: 'flutter-food-delivery-ap-de254.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: '',
-    appId: '',
+    apiKey: 'AIzaSyC5vJVUz_YUxTgeWBTvoLM17oLgYvFiaTU',
+    appId: '1:4049608528:ios:f239654a5c8864a0f3d655',
     messagingSenderId: '4049608528',
     projectId: 'flutter-food-delivery-ap-de254',
     storageBucket: 'flutter-food-delivery-ap-de254.appspot.com',

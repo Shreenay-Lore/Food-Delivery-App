@@ -1,27 +1,24 @@
-// ignore_for_file: prefer_final_fields
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/models/api_error.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/login_response.dart';
-import 'package:food_delivery_app/pages/main_screen/entry_point.dart';
+import 'package:food_delivery_app/routes/names.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-class PhoneVerificationController extends GetxController{
+class EmailVerificationController extends GetxController{
   final box = GetStorage();
 
-  String _phone  = "";
+  String _otp  = "";
 
-  String get phone => _phone;
+  String get otp => _otp;
 
-  set setPhoneNumber(String value){
-    _phone = value;
-    print(phone);
+  set setOtp(String value){
+    _otp = value;
   }
 
   
@@ -34,17 +31,16 @@ class PhoneVerificationController extends GetxController{
   }
 
 
-  void phoneVerificationFunction() async {
+  void verificationFunction() async {
     setLoading = true;
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/users/verify_phone/$phone');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/users/verify/$otp');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization' : 'Bearer $accessToken',
     };
-
 
     try{  
       print('Making request to: $url');
@@ -68,32 +64,43 @@ class PhoneVerificationController extends GetxController{
         box.write("userId", data.id);
         box.write("verification", data.verification);
 
+        setLoading = false;
+        
         Get.snackbar(
-          "Your phone number is successfully verified.", "Order Food Now! ",
+          "Your account is successfully verified.", "Order Food Now! ",
           colorText: kWhite,
-          backgroundColor: kPrimary,
+          backgroundColor: kDark,
           icon: const Icon(Ionicons.fast_food_outline)
         );
 
-        Get.offAll(()=> MainScreen());
-
-        setLoading = false;
+        Get.offAllNamed(AppRoutes.onMainNavBarPage);
 
       }else{
-        var error = apiErrorFromJson(response.body);
+        //var error = apiErrorFromJson(response.body);
         Get.snackbar( 
-          "Failed to verify phone number", error.message!,
+          "Failed to Verify Account", "Please enter valid OTP",
           colorText: kWhite,
           backgroundColor: kRed,
           icon: const Icon(Icons.error)
         );
-
       }
-
     }catch(e){
       debugPrint(e.toString());
     }
   }
-  
 
+
+  void onTapVerifyButton() {
+    if (otp.isEmpty) {
+      Get.snackbar(
+        "OTP Validation",
+        "OTP must be 6-digits long.",
+        backgroundColor: kRed,
+        colorText: kWhite,
+      );
+    } else {
+      verificationFunction();
+    }
+  }
+  
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/app_style.dart';
-import 'package:food_delivery_app/common/back_ground_container.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
@@ -24,6 +23,7 @@ class CategoryPage extends HookWidget {
     final isLoading = hookResult.isLoading;
     
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
         backgroundColor: kOffWhite,
         elevation: 0,
@@ -40,24 +40,22 @@ class CategoryPage extends HookWidget {
         style: appStyle(12, kGray, FontWeight.w600),
         ),
       ),
-      body: BackGroundContainer(
-        child: SizedBox(
-          height: height,
-          child: isLoading
-          ? const FoodsListShimmer()         
-          : Padding(
-            padding:  EdgeInsets.only(top: 12.h),
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              children: List.generate(
-                foods!.length,
-                (index){
-                  FoodsModel food = foods[index];
-                  return FoodTile(
-                    food: food,
-                  );
-                }
-              ),
+      body: SizedBox(
+        height: height,
+        child: isLoading
+        ? const FoodsListShimmer()         
+        : Padding(
+          padding:  EdgeInsets.only(top: 12.h),
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            children: List.generate(
+              foods!.length,
+              (index){
+                FoodsModel food = foods[index];
+                return FoodTile(
+                  food: food,
+                );
+              }
             ),
           ),
         ),

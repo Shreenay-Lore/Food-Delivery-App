@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/pages/categories/controller/category_controller.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
@@ -20,7 +20,7 @@ FetchFoods useFetchFoodsByCategory(String code){
     isLoading.value = true;
 
     try{
-      Uri url = Uri.parse('$appBaseUrl/api/foods/${controller.categoryValue}/$code');
+      Uri url = Uri.parse('${AppUrl.baseUrl}/api/foods/${controller.categoryValue}/$code');
       final response = await http.get(url);
    
       if(response.statusCode == 200){

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/categories_model.dart';
 import 'package:food_delivery_app/models/hook_models/hook_result.dart';
@@ -16,7 +16,7 @@ FetchHook useFetchCategories() {
     isLoading.value = true;
 
     try{
-      Uri url = Uri.parse('$appBaseUrl/api/category/random');
+      Uri url = Uri.parse('${AppUrl.baseUrl}/api/category/random');
       final response = await http.get(url);
       
       

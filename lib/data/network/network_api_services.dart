@@ -1,15 +1,15 @@
 import 'dart:convert';
 
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:food_delivery_app/constants/constants.dart';
 
 class ApiClient {
   final box = GetStorage();
 
   Future<http.Response> getRequest(String endpoint) async {
     String accessToken = box.read('token');
-    Uri url = Uri.parse('$appBaseUrl$endpoint');
+    Uri url = Uri.parse('${AppUrl.baseUrl}$endpoint');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ class ApiClient {
 
   Future<http.Response> postRequest({required String endpoint, required String body}) async {
     String accessToken = box.read('token');
-    Uri url = Uri.parse('$appBaseUrl$endpoint');
+    Uri url = Uri.parse('${AppUrl.baseUrl}$endpoint');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ class ApiClient {
 
   Future<http.Response> putRequest(String endpoint, Map<String, dynamic> body) async {
     String accessToken = box.read('token');
-    Uri url = Uri.parse('$appBaseUrl$endpoint');
+    Uri url = Uri.parse('${AppUrl.baseUrl}$endpoint');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ class ApiClient {
 
   Future<http.Response> patchRequest(String endpoint) async {
     String accessToken = box.read('token');
-    Uri url = Uri.parse('$appBaseUrl$endpoint');
+    Uri url = Uri.parse('${AppUrl.baseUrl}$endpoint');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ class ApiClient {
 
   Future<http.Response> deleteRequest(String endpoint, [Map<String, dynamic>? body]) async {
     String accessToken = box.read('token');
-    Uri url = Uri.parse('$appBaseUrl$endpoint');
+    Uri url = Uri.parse('${AppUrl.baseUrl}$endpoint');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

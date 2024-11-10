@@ -10,19 +10,18 @@ import 'package:food_delivery_app/pages/profile/profile_page.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
-class MainScreen extends StatelessWidget {
-  MainScreen({super.key});
+class MainScreen extends GetView<MainScreenController> {
+  const MainScreen({super.key});
 
-  List<Widget> pageList = const [
-    HomePage(),
-    Placeholder(),
-    ProfilePage(),
-  ];
- 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MainScreenController());
     final CartController cartController = Get.put(CartController());
+
+    List<Widget> pageList = const [
+      HomePage(),
+      Placeholder(),
+      ProfilePage(),
+    ];
     
     return Obx(() {
       return Scaffold(

@@ -1,42 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/pages/auth/controller/phone_verification_controller.dart';
+import 'package:food_delivery_app/pages/auth/controllers/phone_verification_controller.dart';
 import 'package:food_delivery_app/services/verification_service.dart';
 import 'package:get/get.dart';
 import 'package:phone_otp_verification/phone_verification.dart';
 
-class PhoneVerificationPage extends StatefulWidget {
+class PhoneVerificationPage extends GetView<PhoneVerificationController> {
   const PhoneVerificationPage({super.key});
 
   @override
-  State<PhoneVerificationPage> createState() => _PhoneVerificationPageState();
-}
-
-class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
-  VerificationService _verificationService = VerificationService();
-
-  String _verificationId = '';
-
-  @override
   Widget build(BuildContext context) {
-    final PhoneVerificationController controller = Get.put(PhoneVerificationController());
+    final VerificationService verificationService = VerificationService();
     return Obx(() => controller.isLoading == false 
       ? PhoneVerification(
           isFirstPage: false,
           enableLogo: false,
-          themeColor: kPrimary,
+          themeColor: kDark,
           backgroundColor: kLightWhite,
           initialPageText: "Verify Phone Number",
-          initialPageTextStyle: appStyle(20, kPrimary, FontWeight.bold),
+          initialPageTextStyle: appStyle(18.sp, Colors.black87, FontWeight.w600),
           textColor: kDark,
           onSend: (String value) {
             controller.setPhoneNumber = value;
-            _verifyPhoneNumber(value);
+            _verifyPhoneNumber(value, controller, verificationService);
           },
           onVerification: (String value) {
             print('OTP: $value');
-            _submitVerificationCode(value);
+            _submitVerificationCode(value, controller, verificationService);
           },
         )
       : Container(
@@ -50,21 +42,23 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
     );
   }
 
-  void _verifyPhoneNumber(String phoneNumber) async {
-    final PhoneVerificationController controller = Get.put(PhoneVerificationController());
+  void _verifyPhoneNumber(String phoneNumber,
+      PhoneVerificationController controller,
+      VerificationService verificationService) async {
 
-    await _verificationService.verifyPhoneNumber(
+    await verificationService.verifyPhoneNumber(
       controller.phone, 
       codeSend: (String verificationId, int? resendToken) {
-        setState(() {
-          _verificationId = verificationId;
-        });
+        controller.setVerificationId = verificationId;
       },
     );
   }
 
-  void _submitVerificationCode(String code) async {
-    await _verificationService.verifySmsCode(_verificationId, code);
+  void _submitVerificationCode(
+      String code,
+      PhoneVerificationController controller,
+      VerificationService verificationService) async {
+    await verificationService.verifySmsCode(controller.verificationId, code);
   }
 
 

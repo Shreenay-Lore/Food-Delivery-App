@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/cart_response_model.dart';
@@ -60,7 +61,7 @@ class OrdersController extends GetxController{
     final box = GetStorage();
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/orders');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/orders');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

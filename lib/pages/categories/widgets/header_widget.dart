@@ -8,11 +8,13 @@ import 'package:get/get.dart';
 class HeaderWidget extends StatelessWidget {
   final String imageUrl;
   final double height;
+  final bool showBackButton; 
 
   const HeaderWidget({
     Key? key,
     required this.imageUrl,
     required this.height,
+    this.showBackButton = true, 
   }) : super(key: key);
 
   @override
@@ -28,18 +30,19 @@ class HeaderWidget extends StatelessWidget {
             imageUrl: imageUrl,
           ),
         ),
-        Positioned(
-          top: 45.h,
-          left: 14,
-          child: GestureDetector(
-            onTap: () => Get.back(),
-            child: Icon(
-              Ionicons.arrow_back_circle,
-              color: Colors.white,
-              size: 32.h,
+        if (showBackButton) 
+          Positioned(
+            top: 45.h,
+            left: 14,
+            child: GestureDetector(
+              onTap: () => Get.back(),
+              child: Icon(
+                Ionicons.arrow_back_circle,
+                color: Colors.white,
+                size: 32.h,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

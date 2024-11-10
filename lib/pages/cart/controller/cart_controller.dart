@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/cart_count_response_mode.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ class CartController extends GetxController{
     setLoading = true;
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/cart');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/cart');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ class CartController extends GetxController{
     setLoading = true;
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/cart/$productId');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/cart/$productId');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ class CartController extends GetxController{
     setLoading = true;
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/cart/decrement/$productId');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/cart/decrement/$productId');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

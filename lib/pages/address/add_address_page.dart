@@ -7,44 +7,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/common/app_style.dart';
-import 'package:food_delivery_app/common/back_ground_container.dart';
 import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/pages/address/controller/user_location_controller.dart';
+import 'package:food_delivery_app/pages/address/controllers/user_location_controller.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/pages/auth/widget/email_textfield.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class AddAddress extends StatelessWidget {
+class AddAddress extends GetView<UserLocationController> {
   const AddAddress({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final UserLocationController locationController = Get.put(UserLocationController());
 
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
-        child: _buildAppBar(locationController),
+        child: _buildAppBar(controller),
       ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: PageView(
-          controller: locationController.pageController,
+          controller: controller.pageController,
           physics: const NeverScrollableScrollPhysics(),
           pageSnapping: false,
           onPageChanged: (index) {
-            locationController.pageController.jumpToPage(index);
+            controller.pageController.jumpToPage(index);
           },
           children: [
-            googleMapPage(locationController),
+            googleMapPage(controller),
             submitAddressPage(
-              locationController, 
-              locationController.defaultAddress.value, 
-              locationController.isLoading.value
+              controller, 
+              controller.defaultAddress.value, 
+              controller.isLoading.value
             ),      
           ],
         ),
@@ -133,7 +131,7 @@ class AddAddress extends StatelessWidget {
           right: 20,
           bottom: 20.h,
           child: CustomButton(
-            height: 40.h,
+            height: 45.h,
             text: locationController.isLoadingLocation.value ? "Loading..." : "Get Current Location",
             backgroundColor: kDark,
             textColor: kWhite,
@@ -148,70 +146,67 @@ class AddAddress extends StatelessWidget {
       UserLocationController locationController, 
       AddressResponseModel? defaultAddress, 
       bool isLoading){
-    return BackGroundContainer(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w),
-        child: ListView(
-          children: [
-            SizedBox(height: 30.h),
-            EmailTextField(
-              controller: locationController.searchController,
-              hintText: "Address",
-              prefixIcon: const Icon(Ionicons.location_sharp, size: 22, color: kGrayLight),
-              keyboardType: TextInputType.text,
-            ),
-            SizedBox(height: 15.h),
-            EmailTextField(
-              controller: locationController.postalCode,
-              hintText: "Postal Code",
-              prefixIcon: const Icon(Ionicons.location_sharp, size: 22, color: kGrayLight),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 15.h),
-            EmailTextField(
-              controller: locationController.deliveryInstructions,
-              hintText: "Delivery Instructions",
-              prefixIcon: const Icon(AntDesign.menu_fold, size: 22, color: kGrayLight),
-              keyboardType: TextInputType.text,
-            ),
-            SizedBox(height: 15.h),
-            Padding(
-              padding: EdgeInsets.only(left: 8.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Set address as default",
-                    style: appStyle(12, kDark, FontWeight.w600),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      child: ListView(
+        children: [
+          SizedBox(height: 30.h),
+          EmailTextField(
+            controller: locationController.searchController,
+            hintText: "Address*",
+            prefixIcon: const Icon(Ionicons.location_sharp, size: 22, color: kGrayLight),
+            keyboardType: TextInputType.text,
+          ),
+          SizedBox(height: 15.h),
+          EmailTextField(
+            controller: locationController.postalCode,
+            hintText: "Postal Code*",
+            prefixIcon: const Icon(Ionicons.location_sharp, size: 22, color: kGrayLight),
+            keyboardType: TextInputType.number,
+          ),
+          SizedBox(height: 15.h),
+          EmailTextField(
+            controller: locationController.saveAddressAsController,
+            hintText: "Save address as*",
+            prefixIcon: const Icon(AntDesign.menu_fold, size: 22, color: kGrayLight),
+            keyboardType: TextInputType.text,
+          ),
+          SizedBox(height: 15.h),
+          Padding(
+            padding: EdgeInsets.only(left: 8.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "Set address as default",
+                  style: appStyle(12, kDark, FontWeight.w600),
+                ),
+                Obx(
+                  () => CupertinoSwitch(
+                    thumbColor: kWhite,
+                    activeColor: kPrimary,
+                    value: locationController.isDefault,
+                    onChanged: (value) {
+                      locationController.setIsDefault = value;
+                      String data = jsonEncode(defaultAddress);
+                      locationController.setAddress = data;
+                    },
                   ),
-                  Obx(
-                    () => CupertinoSwitch(
-                      thumbColor: kWhite,
-                      activeColor: kPrimary,
-                      value: locationController.isDefault,
-                      onChanged: (value) {
-                        locationController.setIsDefault = value;
-                        String data = jsonEncode(defaultAddress);
-                        locationController.setAddress = data;
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(height: 35.h),
-            CustomButton(
-              height: 45.h,
-              backgroundColor: kPrimary,
-              borderColor: kPrimary,
-              textColor: kWhite,
-              text: isLoading ? 'Loading...' : 'S U B M I T',
-              onTap: () {
-                locationController.submitAddress(defaultAddress);
-              },
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 35.h),
+          CustomButton(
+            height: 45.h,
+            backgroundColor: kDark,
+            textColor: kWhite,
+            text: isLoading ? 'Loading...' : 'C O N F I R M',
+            onTap: () {
+              locationController.submitAddress(defaultAddress);
+            },
+          ),
+        ],
       ),
     );
   }

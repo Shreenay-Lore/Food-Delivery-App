@@ -1,31 +1,39 @@
+class AppException implements Exception {
+  final String? message;
+  final String? prefix;
+  final String? url;
 
-class AppExceptions implements Exception{
-  final _message;
-  final _prefix;
-
-  AppExceptions([this._message, this._prefix]);
-
-  String toString(){
-    return '$_prefix$_message';
-  }
+  AppException([this.message, this.prefix, this.url]);
 }
 
-class InternetException extends AppExceptions {
-  InternetException([String? message]) : super(message, 'No Internet');
+class BadRequestException extends AppException {
+  BadRequestException([String? message, String? url]) : super(message, 'Bad Request', url);
 }
 
-class RequestTimeOut extends AppExceptions {
-  RequestTimeOut([String? message]) : super(message, 'Request Time Out');
+class FetchDataException extends AppException {
+  FetchDataException([String? message, String? url]) : super(message, 'Unable to process', url);
 }
 
-class ServerException extends AppExceptions {
-  ServerException([String? message]) : super(message, 'Internal Server Error');
+class ApiNotRespondingException extends AppException {
+  ApiNotRespondingException([String? message, String? url]) : super(message, 'Api not responded in time', url);
 }
 
-class InvalidUrlException extends AppExceptions {
-  InvalidUrlException([String? message]) : super(message, 'Invalid Url') ;
+class UnAuthorizedException extends AppException {
+  UnAuthorizedException([String? message, String? url]) : super(message, 'UnAuthorized request', url);
 }
 
-class FetchDataException extends AppExceptions {
-  FetchDataException([String? message]) : super(message, '') ;
+class InternetException extends AppException {
+  InternetException([String? message, String? url]) : super(message, 'No Internet', url);
+}
+
+class RequestTimeOut extends AppException {
+  RequestTimeOut([String? message, String? url]) : super(message, 'Request Time Out', url);
+}
+
+class ServerException extends AppException {
+  ServerException([String? message, String? url]) : super(message, 'Internal Server Error', url);
+}
+
+class InvalidUrlException extends AppException {
+  InvalidUrlException([String? message, String? url]) : super(message, 'Invalid Url', url);
 }

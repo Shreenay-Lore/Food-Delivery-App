@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:food_delivery_app/models/client_orders.dart';
@@ -20,7 +20,7 @@ FetchHook useFetchOrders(String orderStatus, String paymentStatus){
 
     String accessToken = box.read('token');
 
-    Uri url = Uri.parse('$appBaseUrl/api/orders?orderStatus=$orderStatus&paymentStatus=$paymentStatus');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/orders?orderStatus=$orderStatus&paymentStatus=$paymentStatus');
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

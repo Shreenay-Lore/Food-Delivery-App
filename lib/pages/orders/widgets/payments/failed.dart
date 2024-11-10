@@ -4,7 +4,7 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
 import 'package:food_delivery_app/pages/orders/controller/orders_controller.dart';
-import 'package:food_delivery_app/pages/main_screen/entry_point.dart';
+import 'package:food_delivery_app/routes/names.dart';
 import 'package:get/get.dart';
 
 class PaymentFailed extends StatelessWidget {
@@ -21,7 +21,7 @@ class PaymentFailed extends StatelessWidget {
         leading: GestureDetector(
           onTap: () {
             orderController.setPaymentUrl = '';
-            Get.off(()=> MainScreen());
+            Get.offAllNamed(AppRoutes.onMainNavBarPage);
           },
           child: const Icon(
             AntDesign.closecircleo,

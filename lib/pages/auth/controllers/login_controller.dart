@@ -5,17 +5,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/api_error.dart';
+import 'package:food_delivery_app/models/login_model.dart';
 import 'package:food_delivery_app/models/login_response.dart';
-import 'package:food_delivery_app/pages/auth/verification_page.dart';
-import 'package:food_delivery_app/pages/main_screen/entry_point.dart';
+import 'package:food_delivery_app/routes/names.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController{
   final box = GetStorage();
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   
+
   RxBool _isLoading  = false.obs;
 
   bool get isLoading => _isLoading.value;
@@ -25,10 +30,19 @@ class LoginController extends GetxController{
   }
 
 
+  final RxBool _password = true.obs;
+
+  bool get password => _password.value;
+
+  set setPassword(bool newState){
+    _password.value = newState;
+  }
+
+
   void loginFunction(String data) async {
     setLoading = true;
 
-    Uri url = Uri.parse('$appBaseUrl/login');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/login');
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
@@ -60,20 +74,16 @@ class LoginController extends GetxController{
         Get.snackbar(
           "You are successfully logged in.", "Order Food! ",
           colorText: kWhite,
-          backgroundColor: kPrimary,
+          backgroundColor: kDark,
           icon: const Icon(Ionicons.fast_food_outline)
         );
 
         if(data.verification == false){
-          Get.offAll(()=> const VerificationPage(),
-          transition: Transition.fade,
-          duration: const Duration(milliseconds: 900),);
+          Get.offAllNamed(AppRoutes.onEmailVerificationPage);
         }
 
         if(data.verification == true){
-          Get.offAll(()=> MainScreen(),
-          transition: Transition.fade,
-          duration: const Duration(milliseconds: 900),);
+          Get.offAllNamed(AppRoutes.onMainNavBarPage);
         }
 
       }else{
@@ -84,20 +94,41 @@ class LoginController extends GetxController{
           backgroundColor: kRed,
           icon: const Icon(Icons.error)
         );
-
       }
-
     }catch(e){
       debugPrint(e.toString());
     }
   }
-  
+
+  void onLoginButtonPressed() {
+    if (emailController.text.isEmpty) {
+      Get.snackbar(
+        "Email Address",
+        "Please enter your email.",
+        backgroundColor: kRed,
+        colorText: kWhite,
+      );
+    } else if (passwordController.text.length < 8) {
+      Get.snackbar(
+        "Password",
+        "Password must be at least 8 characters long.",
+        backgroundColor: kRed,
+        colorText: kWhite,
+      );
+    } else {
+      LoginModel model = LoginModel(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      String data = loginModelToJson(model);
+      loginFunction(data);
+    }
+  }
+
 
   void logout(){
     box.erase();
-    Get.offAll(()=> MainScreen(),
-        transition: Transition.fade,
-        duration: const Duration(milliseconds: 900));
+    Get.offAllNamed(AppRoutes.onLoginPage);
   }
 
 

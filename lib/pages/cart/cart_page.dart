@@ -7,15 +7,15 @@ import 'package:food_delivery_app/common/common_appbar.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/common/shimmers/foodlist_shimmer.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/pages/address/controller/user_location_controller.dart';
-import 'package:food_delivery_app/pages/auth/controller/login_controller.dart';
+import 'package:food_delivery_app/pages/address/controllers/user_location_controller.dart';
+import 'package:food_delivery_app/pages/auth/controllers/login_controller.dart';
+import 'package:food_delivery_app/pages/auth/login_page.dart';
 import 'package:food_delivery_app/pages/orders/controller/orders_controller.dart';
 import 'package:food_delivery_app/hooks/fetch_cart_items.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/cart_response_model.dart';
 import 'package:food_delivery_app/models/login_response.dart';
-import 'package:food_delivery_app/pages/auth/login_redirect.dart';
-import 'package:food_delivery_app/pages/auth/verification_page.dart';
+import 'package:food_delivery_app/pages/auth/email_verification_page.dart';
 import 'package:food_delivery_app/pages/cart/widget/cart_bottom_nav_bar.dart';
 import 'package:food_delivery_app/pages/cart/widget/cart_tile.dart';
 import 'package:food_delivery_app/pages/restaurant/widget/row_text.dart';
@@ -48,11 +48,11 @@ class CartPage extends HookWidget {
     }
 
     if(token == null){
-      return const LoginRedirectPage();
+      return const LoginPage();
     }
 
     if(user != null &&  user.verification == false){
-      return const VerificationPage();
+      return const EmailVerificationPage();
     }
 
     // Calculate total price of all items in the list

@@ -6,7 +6,7 @@ import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/data/network/network_api_services.dart';
 import 'package:food_delivery_app/models/addresses_response_model.dart';
 import 'package:food_delivery_app/models/api_error.dart';
-import 'package:food_delivery_app/pages/main_screen/entry_point.dart';
+import 'package:food_delivery_app/routes/names.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -24,11 +24,11 @@ class AddressRepository {
         Get.snackbar(
           "Your address has been added.", "Order Food! ",
           colorText: kWhite,
-          backgroundColor: kPrimary,
+          backgroundColor: kDark,
           icon: const Icon(Ionicons.fast_food_outline)
         );
 
-        Get.offAll(()=> MainScreen());
+        Get.offAllNamed(AppRoutes.onMainNavBarPage);
 
       } else {
         throw apiErrorFromJson(response.body);
@@ -70,7 +70,7 @@ class AddressRepository {
           icon: const Icon(Ionicons.fast_food_outline)
         );
 
-        Get.offAll(()=> MainScreen());
+        Get.offAllNamed(AppRoutes.onMainNavBarPage);
       } else {
         throw apiErrorFromJson(response.body);
       }

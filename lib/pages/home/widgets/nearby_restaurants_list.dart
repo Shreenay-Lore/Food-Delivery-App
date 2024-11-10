@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/common/shimmers/nearby_shimmer.dart';
 import 'package:food_delivery_app/hooks/fetch_restaurants.dart';
 import 'package:food_delivery_app/models/restaurants_model.dart';
-import 'package:food_delivery_app/pages/home/controller/home_controller.dart';
 import 'package:food_delivery_app/pages/home/widgets/restaurant_widget.dart';
 import 'package:food_delivery_app/pages/restaurant/restaurant_page.dart';
 import 'package:get/get.dart';

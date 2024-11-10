@@ -4,7 +4,7 @@ import 'package:food_delivery_app/common/app_style.dart';
 import 'package:food_delivery_app/common/custom_buttom.dart';
 import 'package:food_delivery_app/common/custom_text.dart';
 import 'package:food_delivery_app/constants/constants.dart';
-import 'package:food_delivery_app/pages/address/add_address_page.dart';
+import 'package:food_delivery_app/routes/names.dart';
 import 'package:get/get.dart';
 
 
@@ -24,8 +24,8 @@ Future<dynamic> showAddressSheet(BuildContext context){
               children: [
                 SizedBox(height: 10.h,),
                 CustomText(
-                  text: "Add Address", 
-                  style: appStyle(18, kPrimary, FontWeight.w600)
+                  text: "Add Your Address", 
+                  style: appStyle(16.sp, kDark, FontWeight.w600)
                 ),
                 SizedBox(height: 10.h,),
                 SizedBox(
@@ -34,11 +34,11 @@ Future<dynamic> showAddressSheet(BuildContext context){
                     children: List.generate(
                       reasonsForAddingAddress.length, 
                       (index) => ListTile(
-                        leading: const Icon(Icons.check, color: kPrimary,),
+                        leading: const Icon(Icons.check, color: kDark, size: 20,),
                         title: Text(
                           reasonsForAddingAddress[index],
                           textAlign: TextAlign.justify,
-                          style: appStyle(11, kGrayLight, FontWeight.normal)
+                          style: appStyle(10.sp, kGrayLight, FontWeight.normal)
                         ),
                       ),
                     ),
@@ -48,14 +48,13 @@ Future<dynamic> showAddressSheet(BuildContext context){
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: CustomButton(  
-                    height: 40.h,
+                    height: 45.h,
                     width: width,
-                    backgroundColor: kPrimary,
-                    borderColor: kPrimary,
+                    backgroundColor: kDark,
                     textColor: kWhite,
                     text: 'Go to add address',
                     onTap: () {
-                      Get.to(()=> const AddAddress());
+                      Get.toNamed(AppRoutes.onAddUserAddressPage);
                     },
                   ),
                 ),
@@ -65,11 +64,6 @@ Future<dynamic> showAddressSheet(BuildContext context){
           ),
         );
       },
-
-
-
-
-
     );
   }
 

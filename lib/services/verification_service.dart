@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/pages/auth/controller/phone_verification_controller.dart';
+import 'package:food_delivery_app/pages/auth/controllers/phone_verification_controller.dart';
 import 'package:get/get.dart';
 
 class VerificationService{

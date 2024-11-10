@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/constants/constants.dart';
+import 'package:food_delivery_app/data/apis/app_url.dart';
 import 'package:food_delivery_app/models/api_error.dart';
 import 'package:food_delivery_app/models/foods_model.dart';
 import 'package:get/get.dart';
@@ -34,7 +34,7 @@ class SearchFoodController extends GetxController {
   void searchFoods(String key) async {
     setLoading = true;
 
-    Uri url = Uri.parse('$appBaseUrl/api/foods/search/$key');
+    Uri url = Uri.parse('${AppUrl.baseUrl}/api/foods/search/$key');
 
     try{  
       print('Making request to: $url');
